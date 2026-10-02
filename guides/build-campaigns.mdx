@@ -1,0 +1,105 @@
+---
+title: "Build and Launch a Conversion Campaign"
+sidebarTitle: "Build Campaigns"
+description: "Create targeted email, SMS, and drip campaigns in Google to engage your leads, nurture prospects, and drive measurable conversions."
+---
+
+Campaigns let you send the right message to the right audience at exactly the right moment in their journey. Whether you are nurturing cold leads, re-engaging dormant contacts, or guiding prospects toward a purchase, Google's campaign builder gives you the sequencing, personalization, and testing tools to do it effectively. By the end of this guide, you will have a fully configured campaign ready to go live.
+
+## Create a Campaign
+
+<Steps>
+  <Step title="Open the Campaign Builder">
+    Go to **Campaigns → New Campaign** in your Google dashboard.
+  </Step>
+  <Step title="Choose a Campaign Type">
+    Select the channel that best fits your goal:
+
+    - **Email** — single or multi-step email sequences
+    - **SMS** — short text message campaigns for time-sensitive offers or reminders
+    - **Drip** — a mixed-channel sequence that combines email and SMS steps with delays between them
+  </Step>
+  <Step title="Name Your Campaign and Set a Goal">
+    Give the campaign a descriptive internal name (e.g., "Q3 Demo Request Nurture"). Then choose a **Goal** from the dropdown — this is the conversion event that marks a contact as converted and removes them from the active sequence:
+
+    - Book a Demo
+    - Complete Purchase
+    - Download Resource
+    - Custom Goal (any event you define in **Settings → Goals**)
+  </Step>
+  <Step title="Define Your Audience">
+    Click **Set Audience** and filter your contact list using one or more of the following criteria:
+
+    - **Tag** — e.g., `new-lead`, `trial-user`, `enterprise`
+    - **Status** — Active, Unsubscribed, Converted
+    - **Lead Source** — the form or landing page where the contact was captured
+    - **Custom Field** — any field value stored on the contact record
+
+    The audience panel shows a live count of matching contacts as you apply filters.
+  </Step>
+  <Step title="Build Your Sequence">
+    Click **Add Step** to insert the first message in your sequence. For each step:
+
+    1. Write your **Subject Line** (email) or **Message Text** (SMS).
+    2. Compose the **Email Body** using the rich-text editor or paste raw HTML.
+    3. Set the **Send Delay** — choose **Immediately** for the first step, then **+1 day**, **+3 days**, or any custom interval for subsequent steps.
+
+    Repeat until your full sequence is built. Drag steps to reorder them at any time.
+  </Step>
+  <Step title="Preview on Desktop and Mobile">
+    Click **Preview** on any step to see exactly how your message will render. Toggle between **Desktop** and **Mobile** views to catch formatting issues before sending.
+  </Step>
+  <Step title="Activate Your Campaign">
+    When you are satisfied with the sequence, click the status toggle in the top-right corner and set the campaign to **Active**. Google will begin enrolling matching contacts immediately and send messages according to your defined delays.
+  </Step>
+</Steps>
+
+## Writing Effective Messages
+
+Personalization dramatically improves open and click-through rates. Insert dynamic tokens anywhere in your subject line or body to automatically replace placeholder text with real contact data.
+
+| Token | Resolves to |
+|---|---|
+| `{{first_name}}` | Contact's first name |
+| `{{company}}` | Company name on the contact record |
+| `{{site_name}}` | Your Google account display name |
+
+Here is an example email body that uses personalization tokens:
+
+```text
+Hi {{first_name}},
+
+I noticed you checked out our pricing page earlier this week — 
+thanks for your interest!
+
+I'd love to show you how {{site_name}} has helped companies like 
+{{company}} increase conversions by 30% in the first 60 days.
+
+Would you be open to a 20-minute call this week?
+
+Best,
+The {{site_name}} Team
+```
+
+If a token has no value for a given contact (e.g., the company field is blank), Google substitutes a fallback you define under **Settings → Personalization Defaults**.
+
+## A/B Testing
+
+A/B testing lets you run a controlled experiment on any step in your campaign sequence to find the message that converts best.
+
+**To enable an A/B test:**
+
+1. Hover over any campaign step and click **A/B Test**.
+2. Define **Variant B** by writing an alternative subject line, changing the email body, or adjusting the send time — you can test one variable at a time.
+3. Set the **Traffic Split** — for example, 50% of recipients see Variant A and 50% see Variant B.
+4. Let the test run until each variant has been delivered to at least **200 recipients** to reach statistical significance.
+
+Once the test completes, Google highlights the winning variant in your campaign analytics. Click **Apply Winner** to replace the original step with the better-performing version.
+
+<Note>
+  Google automatically appends a legally compliant unsubscribe link to every outbound email, satisfying CAN-SPAM and GDPR requirements. You do not need to add one manually. SMS messages include an opt-out instruction ("Reply STOP to unsubscribe") by default.
+</Note>
+
+<Tip>
+  Emails sent on **Tuesday or Wednesday between 9 AM and 11 AM** in the recipient's local time zone consistently see the highest open rates across industries. Use Google's **Send Time Optimization** toggle (available on any step) to let the platform automatically schedule delivery in each contact's best window.
+</Tip>

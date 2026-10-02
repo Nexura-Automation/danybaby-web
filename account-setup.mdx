@@ -1,0 +1,74 @@
+---
+title: "Set Up Your Google Conversion Account"
+sidebarTitle: "Account Setup"
+description: "Configure your Google workspace, invite your team, connect your first site, and set up billing — all before launching your first campaign."
+---
+
+A properly configured account ensures that your lead data is accurate, your team has the right level of access, and your billing is in order before you go live. This guide covers every step of the initial setup process, from creating your account through connecting your first site and choosing a plan.
+
+## Creating Your Account
+
+To get started, navigate to [app.google.com](https://app.google.com) and click **Get Started Free**. Enter your full name, work email address, and a strong password, then click **Create Account**.
+
+Google will immediately send a verification email to the address you provided. Open the email and click **Verify My Email** — this activates your account and takes you into your new workspace for the first time. If the email doesn't arrive within a few minutes, check your spam folder or click **Resend Verification Email** on the login screen.
+
+## Workspace Settings
+
+Your workspace is the top-level container for all your sites, leads, forms, and campaigns. Configuring it correctly from the start keeps your data clean and your reporting accurate.
+
+Go to **Settings → Workspace** to update the following:
+
+- **Workspace Name** — use a name that clearly identifies your business or project (for example, "Acme Corp Marketing").
+- **Timezone** — set this to the timezone where your primary audience is located. Google uses this setting for scheduling campaigns and reporting on lead activity times.
+- **Default Currency** — select the currency used in your conversion value tracking and revenue reporting.
+
+For a full list of workspace configuration options, see the [Workspace Settings reference](/configuration/workspace-settings).
+
+<Tip>
+  Set your timezone before you launch any campaigns. Send times, drip delays, and scheduled reports all depend on this setting — changing it after campaigns are active can cause timing inconsistencies.
+</Tip>
+
+## Inviting Team Members
+
+You can give colleagues access to your Google workspace without sharing your login credentials. Go to **Settings → Team → Invite**, enter the team member's email address, select a role, and click **Send Invite**. They'll receive an email prompting them to create their own account and join your workspace.
+
+Google supports three role types:
+
+| Role    | Permissions                                                                 |
+|---------|-----------------------------------------------------------------------------|
+| Admin   | Full access — manage settings, billing, team members, sites, and campaigns. |
+| Editor  | Create and edit forms, campaigns, and leads. Cannot access billing or team settings. |
+| Viewer  | Read-only access to dashboards, leads, and campaign reports.                |
+
+Assign the least-permissive role that meets each person's needs. You can change a team member's role at any time from the **Settings → Team** page.
+
+## Connecting Your First Site
+
+Google tracks visitor behavior and lead activity through a lightweight JavaScript snippet installed on your site. You can connect multiple sites to a single workspace, and each site gets its own unique snippet.
+
+To connect a site:
+
+1. Go to **Sites → Add Site**.
+2. Enter your domain (for example, `https://www.yourbusiness.com`) and click **Add**.
+3. Google will generate a unique tracking snippet for that domain.
+4. Copy the snippet and paste it inside the `<head>` tag of your site's HTML — or deploy it through your tag manager.
+
+Once the snippet is live, Google will begin registering visitor sessions within minutes. You can confirm the connection is active from the **Sites** page, where a green status indicator will appear next to your domain.
+
+## Billing & Plan
+
+Google offers several plans to match different business sizes and conversion volumes. To review your current plan or upgrade, go to **Settings → Billing**.
+
+From the Billing page you can:
+
+- **Upgrade or downgrade your plan** — changes take effect at the start of the next billing cycle.
+- **Add or update a payment method** — Google accepts all major credit cards and ACH bank transfers.
+- **View and download invoices** — a full billing history is available for your records.
+
+<Note>
+  Billing is per workspace, not per site. You can connect as many sites as your plan allows under a single workspace, and all usage counts toward one subscription. If you manage multiple independent businesses, create a separate workspace for each.
+</Note>
+
+<Warning>
+  Downgrading to a lower plan may reduce the number of active sites, monthly lead captures, or team seats available to your workspace. Review the plan limits carefully before downgrading to avoid disruption to live campaigns.
+</Warning>

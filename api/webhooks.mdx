@@ -1,0 +1,236 @@
+---
+title: "Webhooks API — Real-Time Event Notifications"
+sidebarTitle: "Webhooks"
+description: "Register HTTPS endpoints to receive real-time Google event notifications for leads, campaigns, and conversions as they happen."
+---
+
+Webhooks let you react to events in your Google workspace the moment they occur, without polling the API. When an event fires — a new lead is captured, a campaign completes, a conversion is logged — Google sends an HTTP POST request to your registered endpoint with a signed JSON payload. You can use webhooks to trigger downstream workflows: syncing records to your CRM, sending Slack notifications, updating your billing system, or kicking off custom automation. All webhook management endpoints require an API key with the `webhooks:manage` scope.
+
+## Supported Events
+
+Register one or more of the following event types when you create a webhook endpoint. You can subscribe to as many events as you need on a single endpoint.
+
+| Event                  | Fires when…                                                       |
+|------------------------|-------------------------------------------------------------------|
+| `lead.created`         | A new lead is added to your workspace                             |
+| `lead.updated`         | A lead's status, tags, or contact details are changed             |
+| `lead.converted`       | A lead's status is set to `converted`                             |
+| `campaign.started`     | A campaign's status changes to `active` and delivery begins       |
+| `campaign.completed`   | All messages in a campaign have been sent                         |
+| `conversion.logged`    | A new conversion event is recorded (server-side or client-side)   |
+
+## Webhook Payload
+
+Every webhook request Google sends to your endpoint shares the same envelope structure: an `event` name, an ISO 8601 `timestamp`, and a `data` object containing the affected resource.
+
+```json
+{
+  "event": "lead.created",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "id": "lead_abc123",
+    "email": "jane@example.com",
+    "name": "Jane Doe",
+    "source": "exit-intent-form"
+  }
+}
+```
+
+The shape of `data` matches the resource object returned by the corresponding REST endpoint. For example, a `lead.created` payload contains the same fields as a `GET /leads/{id}` response.
+
+## Verifying Webhook Signatures
+
+Google signs every webhook payload with HMAC-SHA256 using the secret associated with your webhook endpoint. The signature is included in the `X-Google-Signature` request header as a hex digest. You should verify this signature before processing any payload to confirm the request genuinely came from Google and has not been tampered with.
+
+<Warning>
+  Never process a webhook payload without first verifying its signature. Skipping this step leaves your endpoint open to spoofed requests.
+</Warning>
+
+<CodeGroup>
+
+```javascript JavaScript
+const crypto = require('crypto');
+
+const sig = req.headers['x-google-signature'];
+const expected = crypto
+  .createHmac('sha256', WEBHOOK_SECRET)
+  .update(JSON.stringify(req.body))
+  .digest('hex');
+
+if (sig !== expected) {
+  return res.status(401).send('Invalid signature');
+}
+
+// Safe to process req.body now
+```
+
+```python Python
+import hmac
+import hashlib
+import json
+
+sig = request.headers.get('X-Google-Signature')
+expected = hmac.new(
+    WEBHOOK_SECRET.encode(),
+    json.dumps(request.json).encode(),
+    hashlib.sha256
+).hexdigest()
+
+if sig != expected:
+    return '', 401
+
+# Safe to process request.json now
+```
+
+</CodeGroup>
+
+<Tip>
+  Use a constant-time comparison function (such as `hmac.compare_digest` in Python or `crypto.timingSafeEqual` in Node.js) rather than the `==` or `!==` operator. This prevents timing attacks that could leak information about your secret.
+</Tip>
+
+---
+
+## Register a webhook
+
+Subscribe your endpoint to one or more Google events.
+
+**`POST /webhooks`**
+
+<ParamField body="url" type="string" required>
+  The HTTPS URL of your endpoint. Google will POST event payloads to this URL. Must be publicly reachable and use HTTPS.
+</ParamField>
+
+<ParamField body="events" type="array" required>
+  An array of event type strings to subscribe to. You must include at least one. See [Supported Events](#supported-events) for valid values.
+</ParamField>
+
+<ParamField body="secret" type="string">
+  A secret string used to sign payloads with HMAC-SHA256. If omitted, Google generates a random secret for you. Store this value securely — it is only shown once.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://api.google.com/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://yourapp.com/webhooks/google",
+    "events": ["lead.created", "conversion.logged"],
+    "secret": "my_super_secret_string"
+  }'
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/webhooks', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'https://yourapp.com/webhooks/google',
+    events: ['lead.created', 'conversion.logged'],
+    secret: 'my_super_secret_string'
+  })
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "wh_aaa111",
+    "url": "https://yourapp.com/webhooks/google",
+    "events": ["lead.created", "conversion.logged"],
+    "secret": "my_super_secret_string",
+    "created_at": "2024-01-16T17:00:00Z"
+  },
+  "meta": { "request_id": "req_k1l2m3" }
+}
+```
+
+---
+
+## List webhooks
+
+Retrieve all webhook endpoints registered in your workspace.
+
+**`GET /webhooks`**
+
+<CodeGroup>
+
+```bash curl
+curl https://api.google.com/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/webhooks', {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "wh_aaa111",
+      "url": "https://yourapp.com/webhooks/google",
+      "events": ["lead.created", "conversion.logged"],
+      "created_at": "2024-01-16T17:00:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 25,
+    "total": 1,
+    "total_pages": 1
+  },
+  "meta": { "request_id": "req_n4o5p6" }
+}
+```
+
+<Note>
+  The `secret` field is not returned by the list or retrieve endpoints after initial creation. If you lose your secret, delete the webhook and create a new one with a fresh secret.
+</Note>
+
+---
+
+## Delete a webhook
+
+Remove a webhook endpoint. Google will immediately stop sending events to the associated URL.
+
+**`DELETE /webhooks/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the webhook to delete.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -X DELETE https://api.google.com/v1/webhooks/wh_aaa111 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+await fetch('https://api.google.com/v1/webhooks/wh_aaa111', {
+  method: 'DELETE',
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+// Successful deletion returns HTTP 204 with no response body
+```
+
+</CodeGroup>
+
+A successful deletion returns HTTP **204 No Content** with an empty response body.
+
+<Note>
+  If your endpoint returns a non-2xx HTTP status, Google automatically retries the delivery up to **5 times** using exponential backoff — at approximately 1 minute, 5 minutes, 30 minutes, 2 hours, and 8 hours after the initial attempt. If all retries fail, the event is dropped and a failed delivery is recorded in your webhook log in the dashboard. Make sure your endpoint responds with a `2xx` status as quickly as possible; perform any heavy processing asynchronously after acknowledging receipt.
+</Note>

@@ -1,0 +1,102 @@
+---
+title: "Connect Google to Your Tech Stack"
+sidebarTitle: "Integrations"
+description: "Connect Google to your CRM, email marketing tools, e-commerce platforms, analytics services, and automation apps in minutes."
+---
+
+The Google Integrations Hub lets you connect your conversion data to the tools your team already uses. Pushing leads directly into your CRM, triggering email sequences in your marketing platform, or syncing conversion events to your analytics stack eliminates manual data entry and keeps every system in sync. You can manage all your connections from a single place under **Settings → Integrations**.
+
+<Note>
+  Adding or removing an integration takes effect immediately. There is no propagation delay — new leads and events start flowing to a connected tool the moment you save the integration.
+</Note>
+
+---
+
+## Available Integrations
+
+### CRM
+
+Connect your CRM to automatically push captured leads and conversion events as contacts, deals, or opportunities the moment they are created in Google.
+
+- **Salesforce** — sync leads as Leads or Contacts, map custom fields, and trigger Salesforce workflows on conversion events
+- **HubSpot** — create or update HubSpot contacts from Google leads, sync deal stages, and use HubSpot lists as audience segments
+- **Pipedrive** — push leads as Persons and Deals, update pipeline stages on conversions
+
+For a detailed setup guide covering field mapping and sync options for CRM integrations, see [Integrating your CRM with Google](/guides/integrate-crm).
+
+### Email Marketing
+
+Automatically subscribe captured leads to your email lists and trigger sequences based on Google conversion events.
+
+- **Mailchimp** — add leads to audiences, apply tags, and trigger automations
+- **ActiveCampaign** — create contacts, add to lists, and start automation sequences
+- **ConvertKit** — tag subscribers and trigger sequences directly from lead capture events
+
+### E-commerce
+
+Connect your online store to attribute revenue to Google campaigns and track purchase conversions automatically.
+
+- **Shopify** — sync order events as conversions, attribute revenue to campaigns, and import customer lists as audiences
+- **WooCommerce** — install the Google WooCommerce plugin to track purchase events and push order data
+- **BigCommerce** — connect via API key to sync order completions and customer data
+
+### Analytics
+
+Send Google conversion and event data to your analytics platforms for unified reporting.
+
+- **Google Analytics** — forward conversion events as GA4 custom events for cross-platform attribution
+- **Segment** — route Google events through your Segment workspace to all downstream destinations
+- **Mixpanel** — push lead capture and conversion events as Mixpanel events for funnel and retention analysis
+
+### Communication
+
+Get notified where your team already communicates, or trigger SMS messages to leads.
+
+- **Slack** — receive lead notifications and conversion alerts in any Slack channel you choose
+- **Twilio** — send SMS messages to leads immediately after capture, or as part of a campaign sequence
+
+### Automation
+
+Build multi-step workflows between Google and thousands of other apps without code.
+
+- **Zapier** — use any Google event as a Zap trigger to connect with 6,000+ apps
+- **Make (Integromat)** — design advanced multi-step scenarios using Google as a trigger or action module
+
+---
+
+## Managing Integrations
+
+### Connecting an integration
+
+<Steps>
+  <Step title="Open the Integrations Hub">
+    Go to **Settings → Integrations** and find the integration you want to connect, either by browsing categories or using the search bar.
+  </Step>
+  <Step title="Authorize the connection">
+    Click **Connect** on the integration card. Depending on the integration, you will either be redirected through an **OAuth flow** (where you log in to the third-party app and grant permissions) or prompted to paste an **API key** from your third-party account. Follow the on-screen prompts to complete authorization.
+  </Step>
+  <Step title="Configure field mappings and triggers">
+    After authorization, the integration's configuration panel opens. Map Google fields (such as lead name, email, and source) to the corresponding fields in the connected app. Set your preferred **sync frequency** (real-time, hourly, or daily) and choose which **event types** should trigger a sync.
+  </Step>
+  <Step title="Save and test">
+    Click **Save**. Use the **Send Test Event** button to push a sample payload to the connected app and verify the mapping is correct before going live.
+  </Step>
+</Steps>
+
+### Configuring an existing integration
+
+Click the **Settings** icon on any connected integration card to reopen its configuration panel. You can update field mappings, change the sync frequency, or modify which event types are included at any time.
+
+### Disconnecting an integration
+
+Click **Disconnect** on the integration card to remove authorization. Google will immediately stop sending new data to that integration. Any data that was already synced before disconnection remains in the third-party app — disconnecting does not delete data from your connected tools.
+
+---
+
+## API & Custom Integrations
+
+If the integration you need isn't listed in the hub, you have two options.
+
+**REST API** — Google's REST API gives you full programmatic access to leads, campaigns, conversion events, forms, and workspace settings. Use it to build a custom integration with any internal tool or proprietary platform. See the [API Overview](/api/overview) to get started.
+
+**Zapier** — Even without a native integration, you can connect Google to thousands of apps through Zapier. Use the Google Zapier app to trigger Zaps on lead capture, conversion events, or campaign status changes, then route data to any Zapier-supported destination.

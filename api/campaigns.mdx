@@ -1,0 +1,333 @@
+---
+title: "Campaigns API — Create and Manage Campaigns"
+sidebarTitle: "Campaigns"
+description: "Build, launch, pause, and measure email, SMS, and drip campaigns in your Google workspace through the Campaigns REST API."
+---
+
+The Campaigns API lets you programmatically manage the full lifecycle of your marketing campaigns — from initial creation and audience setup through launch, performance measurement, and completion. You can create email, SMS, and multi-step drip campaigns, update their configuration, control their running state, and pull detailed performance statistics. All endpoints require an API key with at least the `campaigns:read` scope; creating and modifying campaigns additionally requires `campaigns:write`.
+
+---
+
+## List campaigns
+
+Retrieve a paginated list of all campaigns in your workspace.
+
+**`GET /campaigns`**
+
+<ParamField query="status" type="string">
+  Filter by campaign status. Accepted values: `draft`, `active`, `paused`, `completed`.
+</ParamField>
+
+<ParamField query="type" type="string">
+  Filter by campaign type. Accepted values: `email`, `sms`, `drip`.
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Page number to retrieve.
+</ParamField>
+
+<ParamField query="per_page" type="integer" default="25">
+  Number of campaigns per page. Maximum `100`.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -G https://api.google.com/v1/campaigns \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d status=active \
+  -d type=email
+```
+
+```javascript JavaScript
+const params = new URLSearchParams({ status: 'active', type: 'email' });
+const res = await fetch(`https://api.google.com/v1/campaigns?${params}`, {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data, pagination } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "camp_xyz001",
+      "name": "Q1 Re-engagement Email",
+      "type": "email",
+      "status": "active",
+      "audience_count": 1450,
+      "sent_count": 980,
+      "created_at": "2024-01-10T09:00:00Z"
+    },
+    {
+      "id": "camp_xyz002",
+      "name": "Trial Expiry Drip",
+      "type": "drip",
+      "status": "active",
+      "audience_count": 312,
+      "sent_count": 312,
+      "created_at": "2024-01-05T11:30:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 25,
+    "total": 18,
+    "total_pages": 1
+  },
+  "meta": { "request_id": "req_m4n5o6" }
+}
+```
+
+---
+
+## Create a campaign
+
+Create a new campaign in `draft` status. Once created, you can add steps and an audience through the dashboard or API before activating it.
+
+**`POST /campaigns`**
+
+<ParamField body="name" type="string" required>
+  A descriptive name for the campaign. Unique within your workspace.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  Campaign type. Accepted values: `email`, `sms`, `drip`.
+</ParamField>
+
+<ParamField body="goal" type="string">
+  The conversion goal tied to this campaign, for example `trial-upgrade` or `demo-booked`.
+</ParamField>
+
+<ParamField body="audience" type="object">
+  <Expandable title="audience properties">
+    <ParamField body="audience.filter_status" type="string">
+      Include only leads with this status. Accepted values: `new`, `contacted`, `qualified`.
+    </ParamField>
+    <ParamField body="audience.filter_tag" type="string">
+      Include only leads that have this tag.
+    </ParamField>
+    <ParamField body="audience.filter_source" type="string">
+      Include only leads from this acquisition source.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://api.google.com/v1/campaigns \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Spring Promo Drip",
+    "type": "drip",
+    "goal": "purchase",
+    "audience": {
+      "filter_status": "qualified",
+      "filter_tag": "high-intent"
+    }
+  }'
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/campaigns', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Spring Promo Drip',
+    type: 'drip',
+    goal: 'purchase',
+    audience: { filter_status: 'qualified', filter_tag: 'high-intent' }
+  })
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "camp_xyz003",
+    "name": "Spring Promo Drip",
+    "type": "drip",
+    "status": "draft",
+    "goal": "purchase",
+    "audience_count": 267,
+    "sent_count": 0,
+    "created_at": "2024-01-16T15:00:00Z"
+  },
+  "meta": { "request_id": "req_p7q8r9" }
+}
+```
+
+---
+
+## Retrieve a campaign
+
+Fetch full details for a single campaign, including its configured steps.
+
+**`GET /campaigns/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the campaign.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl https://api.google.com/v1/campaigns/camp_xyz003 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/campaigns/camp_xyz003', {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "camp_xyz003",
+    "name": "Spring Promo Drip",
+    "type": "drip",
+    "status": "draft",
+    "goal": "purchase",
+    "audience_count": 267,
+    "sent_count": 0,
+    "steps": [
+      { "step": 1, "type": "email", "delay_hours": 0, "subject": "Your exclusive spring offer" },
+      { "step": 2, "type": "email", "delay_hours": 48, "subject": "Just 3 days left" }
+    ],
+    "created_at": "2024-01-16T15:00:00Z"
+  },
+  "meta": { "request_id": "req_s1t2u3" }
+}
+```
+
+---
+
+## Update a campaign
+
+Modify a campaign's name, goal, or status. Setting `status` to `active` launches the campaign and begins delivering messages to your audience.
+
+**`PATCH /campaigns/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the campaign to update.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Updated campaign name.
+</ParamField>
+
+<ParamField body="goal" type="string">
+  Updated conversion goal label.
+</ParamField>
+
+<ParamField body="status" type="string">
+  Updated status. Accepted values: `active`, `paused`, `draft`. Setting to `active` starts delivery.
+</ParamField>
+
+<Note>
+  You cannot edit a campaign's steps while its status is `active`. Set `status` to `paused` first, make your changes through the dashboard, then set `status` back to `active` to resume.
+</Note>
+
+<CodeGroup>
+
+```bash curl
+curl -X PATCH https://api.google.com/v1/campaigns/camp_xyz003 \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "status": "active" }'
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/campaigns/camp_xyz003', {
+  method: 'PATCH',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ status: 'active' })
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "camp_xyz003",
+    "name": "Spring Promo Drip",
+    "type": "drip",
+    "status": "active",
+    "goal": "purchase",
+    "audience_count": 267,
+    "sent_count": 0,
+    "created_at": "2024-01-16T15:00:00Z"
+  },
+  "meta": { "request_id": "req_v4w5x6" }
+}
+```
+
+---
+
+## Get campaign stats
+
+Retrieve aggregated performance statistics for a campaign. Stats are updated in near real-time as messages are delivered and recipients engage.
+
+**`GET /campaigns/{id}/stats`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the campaign.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl https://api.google.com/v1/campaigns/camp_xyz003/stats \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/campaigns/camp_xyz003/stats', {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "campaign_id": "camp_xyz003",
+    "sent": 267,
+    "delivered": 261,
+    "opened": 143,
+    "clicked": 87,
+    "converted": 34,
+    "unsubscribed": 5,
+    "open_rate": 0.548,
+    "click_rate": 0.333,
+    "conversion_rate": 0.130
+  },
+  "meta": { "request_id": "req_y7z8a9" }
+}
+```
+
+<Tip>
+  Use the `converted` count alongside your `goal` field to track how well each campaign drives the specific conversion event you care about. You can compare `conversion_rate` across campaigns to identify your highest-performing messaging.
+</Tip>

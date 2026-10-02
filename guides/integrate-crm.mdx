@@ -1,0 +1,89 @@
+---
+title: "Integrate Google with Your CRM"
+sidebarTitle: "CRM Integration"
+description: "Sync leads and contact data from Google to Salesforce, HubSpot, Pipedrive, and other CRMs automatically, in real time."
+---
+
+Your CRM is where deals get closed — but it is only as useful as the data flowing into it. Connecting Google to your CRM means every lead captured through your forms, pop-ups, and landing pages appears instantly in the tool your sales team already lives in. This guide walks you through connecting a native CRM integration, using the API or Zapier for unsupported platforms, and understanding exactly how sync behaves once everything is live.
+
+## Supported CRMs
+
+Google offers native, no-code integrations with the following platforms:
+
+<CardGroup cols={2}>
+  <Card title="Salesforce" icon="cloud">
+    Sync leads directly to Salesforce Leads or Contacts objects with full field mapping and two-way sync support.
+  </Card>
+  <Card title="HubSpot" icon="h">
+    Push new leads to HubSpot Contacts and keep lifecycle stage, tags, and custom properties in sync automatically.
+  </Card>
+  <Card title="Pipedrive" icon="chart-line">
+    Create Persons and Deals in Pipedrive the moment a lead is captured, with pipeline stage mapping built in.
+  </Card>
+  <Card title="Zapier" icon="bolt">
+    Connect Google to 6,000+ apps through Zapier, including any CRM without a native integration.
+  </Card>
+</CardGroup>
+
+## Connecting HubSpot
+
+The steps below use HubSpot as the primary example. The connection flow for Salesforce and Pipedrive is nearly identical — substitute the relevant platform name at each step.
+
+<Steps>
+  <Step title="Open the HubSpot Integration Settings">
+    Go to **Settings → Integrations → HubSpot** in your Google dashboard.
+  </Step>
+  <Step title="Authorize the Connection">
+    Click **Connect HubSpot**. You will be redirected to HubSpot's OAuth authorization screen. Sign in to your HubSpot account and click **Grant Access** to allow Google to read and write contact data. You will be returned to your Google dashboard automatically once authorization is complete.
+  </Step>
+  <Step title="Map Your Fields">
+    In the **Field Mapping** panel, match Google lead properties to the corresponding HubSpot Contact properties. At minimum, configure the following mappings:
+
+    | Google Field | HubSpot Property |
+    |---|---|
+    | Name | `firstname` / `lastname` |
+    | Email | `email` |
+    | Phone | `phone` |
+    | Tags | `google_tags` (custom property) |
+
+    Click **Add Mapping** to include any additional custom fields your team tracks.
+  </Step>
+  <Step title="Set the Sync Direction">
+    Choose how data flows between the two platforms:
+
+    - **One-Way (Google → HubSpot)** — lead data flows from Google into HubSpot only. Changes made in HubSpot are not reflected in Google.
+    - **Two-Way** — updates in either platform are mirrored to the other. This is recommended if your sales team edits contact records directly in HubSpot.
+  </Step>
+  <Step title="Save and Go Live">
+    Click **Save Integration**. Google will immediately begin syncing new leads to HubSpot as they are captured. Existing leads are not synced retroactively by default — use the **Bulk Sync** button to push your historical contacts on demand.
+  </Step>
+</Steps>
+
+## Connecting via API or Zapier
+
+If your CRM is not listed above, you have two options:
+
+**REST API** — Google exposes a full REST API for leads. You can POST lead data to your CRM directly, query and update contact records, and subscribe to webhook events. See the [Leads API reference](/api/leads) for endpoint documentation, authentication details, and request examples.
+
+**Zapier** — For a no-code solution, use the Google Zapier app:
+
+1. Log in to Zapier and click **Create Zap**.
+2. Set the **Trigger** app to **Google** and choose the **New Lead Captured** event.
+3. Connect your Google account and select the form or lead source you want to monitor.
+4. Set the **Action** app to your CRM (e.g., Zoho, ActiveCampaign, Copper) and choose **Create Contact** or the equivalent action.
+5. Map the fields and turn the Zap on.
+
+Every new lead captured in Google will instantly create a contact record in your chosen CRM — no code required.
+
+## Sync Behavior
+
+Understanding how and when data syncs helps you avoid duplicate records and data gaps:
+
+- **New leads** sync to your CRM in **real time**, typically within a few seconds of capture.
+- **Updates to existing records** (e.g., a tag added via a workflow, or a status change) sync on a **5-minute interval**.
+- **Deleted leads** in Google are **not deleted** in your CRM. Instead, Google adds a `google-deleted` tag to the contact record in your CRM so your team is aware of the change without losing the record.
+- If a sync attempt fails (e.g., due to a field validation error in the CRM), Google logs the error under **Settings → Integrations → Sync Log** and retries automatically after 15 minutes.
+
+<Tip>
+  Map all of your custom fields **before** going live with the integration. Fields that are not mapped at the time a lead syncs will not be back-filled automatically — you would need to trigger a manual re-sync for any affected records. Take ten minutes to audit your field mapping in a staging environment before activating the integration in production.
+</Tip>

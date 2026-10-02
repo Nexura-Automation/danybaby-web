@@ -1,0 +1,72 @@
+---
+title: "Configure Alerts and Notification Settings"
+sidebarTitle: "Notifications"
+description: "Set up email alerts, in-app notifications, and webhooks so your team stays informed about leads, conversions, and campaign activity."
+---
+
+Google's notification system keeps you and your team informed about the moments that matter most — a new lead captured, a conversion goal hit, or a campaign that needs attention. You can receive notifications by email, through the in-app notification center, or programmatically via webhooks, giving you full flexibility over how and where you get updates.
+
+## Notification Types
+
+Google supports four categories of notifications. Each can be enabled or disabled independently, and each can be routed to different recipients.
+
+**New Lead Notification**
+Sends an email alert every time a visitor submits a form and is captured as a new lead. The email includes the lead's name, email address, the form they completed, and the source URL. Use this when you want your sales team to follow up immediately after a lead comes in.
+
+**Conversion Alert**
+Fires when a tracked conversion goal is reached — for example, when a lead completes a purchase, books a demo, or reaches a specific page. Each alert includes the conversion type, the lead's details, and the attributed revenue value (if configured).
+
+**Campaign Status**
+Notifies you when a campaign finishes sending, is manually paused, or pauses automatically due to an error (such as a sending domain verification failure or an empty audience segment). This notification helps you catch issues before they affect delivery at scale.
+
+**Weekly Summary**
+A digest email sent every Monday morning that summarises the previous week's performance: total leads captured, conversion rate, top-performing campaigns, and week-over-week trend changes.
+
+<Tip>
+  Enable the Weekly Summary even if you check your dashboard regularly. The digest gives you a clean snapshot of trends over time and is easy to forward to stakeholders or leadership who don't need daily updates.
+</Tip>
+
+---
+
+## Configuring Email Notifications
+
+<Steps>
+  <Step title="Open Notification Settings">
+    Navigate to **Settings → Notifications** in the left sidebar.
+  </Step>
+  <Step title="Toggle notification types on or off">
+    Each notification type has an individual toggle. Enable the ones relevant to your workflow. For example, you might enable New Lead Notifications and Conversion Alerts for your sales team while leaving Campaign Status on only for your marketing team.
+  </Step>
+  <Step title="Add recipient email addresses">
+    Under each enabled notification type, click **Add Recipient** and enter the email addresses that should receive that alert. You can add multiple addresses — for example, an individual team member's address and a shared inbox like `leads@yourcompany.com`.
+  </Step>
+  <Step title="Save your settings">
+    Click **Save** at the bottom of the page. Your changes take effect for all future notifications immediately.
+  </Step>
+</Steps>
+
+<Note>
+  Recipient email addresses do not need to belong to Google team members. You can send notifications to any email address, including external stakeholders or third-party inboxes.
+</Note>
+
+---
+
+## In-App Notifications
+
+The bell icon (🔔) in the top-right corner of the Google dashboard opens the **Notification Center**. This panel displays a real-time feed of up to the last 50 events across your workspace, including lead captures, conversion alerts, campaign status changes, and team activity.
+
+Click any notification in the panel to jump directly to the relevant lead, campaign, or settings page. Mark individual notifications as read by clicking the checkmark, or clear all at once with **Mark All as Read** at the top of the panel.
+
+In-app notifications are always on and cannot be disabled — they serve as your always-available audit trail for workspace activity regardless of your email preferences.
+
+---
+
+## Webhook Notifications
+
+For real-time, programmatic alerts that feed into your own systems — such as a CRM, a data warehouse, or a custom Slack integration — use Google's webhook notification system.
+
+Webhooks deliver a JSON payload to a URL you specify within seconds of an event occurring. You can configure separate webhook endpoints for different event types, or send all events to a single endpoint and filter them in your receiving application.
+
+To set up a webhook, navigate to **Settings → Notifications → Webhooks**, click **Add Webhook**, paste your endpoint URL, select the event types to subscribe to, and click **Save**. Google will send a test `ping` event to confirm the endpoint is reachable before activating it.
+
+For full details on payload structure, event types, and signature verification, see the [Webhooks API reference](/api/webhooks).

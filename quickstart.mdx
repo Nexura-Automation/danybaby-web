@@ -1,47 +1,80 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Google Conversion Platform"
+sidebarTitle: "Quickstart"
+description: "Go from zero to your first lead capture in minutes — install the tracking snippet, build a form, and launch a follow-up campaign."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+This guide walks you through everything you need to capture your first lead and trigger an automated follow-up. By the end, you'll have a live lead form on your site, a verified conversion event in your dashboard, and a welcome email campaign ready to engage new prospects.
 
 ## Prerequisites
 
-Before you begin, you must have:
+Before you begin, make sure you have the following:
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+- A **Google account** — sign up free at [app.google.com](https://app.google.com) if you don't have one yet.
+- A **website or landing page** where you can add a JavaScript snippet to the `<head>` of your HTML.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Create Your Account">
+    Navigate to [app.google.com](https://app.google.com) and click **Get Started Free**. Enter your name, work email address, and a password, then click **Create Account**.
 
-    ```bash
-    npm install your-package
-    ```
+    Google will send a verification email to the address you provided. Open that email and click **Verify My Email** to activate your account and land in your new workspace dashboard.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
+  <Step title="Install the Tracking Snippet">
+    The Google tracking snippet identifies visitors on your site and powers all lead capture, analytics, and conversion tracking.
+
+    From your dashboard, go to **Settings → Tracking Snippet** and copy your unique snippet. Paste it inside the `<head>` tag of every page on your site — or, if you use a tag manager, add it as a new tag.
+
+    ```html
+    <script
+      src="https://cdn.google.com/conversion.js"
+      data-site-id="YOUR_SITE_ID"
+    ></script>
     ```
+
+    Replace `YOUR_SITE_ID` with the value shown in your dashboard. This value is unique to your workspace.
+
+    <Note>
+      The tracking snippet only needs to be installed once. A single snippet placed in the shared `<head>` of your site covers all pages automatically — no need to add it page by page.
+    </Note>
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
-    ```
+  <Step title="Create Your First Lead Form">
+    With tracking live, you're ready to start capturing leads. In your dashboard, navigate to **Capture → Forms → New Form**.
+
+    1. Give your form a name (for example, "Homepage Exit Intent Form").
+    2. Select the fields you want to collect — **Name**, **Email**, and **Phone** are available by default.
+    3. Under **Trigger**, choose when the form appears:
+       - **Exit Intent** — displays when the visitor moves their cursor toward the browser tab bar.
+       - **Time on Page** — displays after a set number of seconds (for example, 30 seconds).
+    4. Customize the headline and submit button text to match your offer.
+    5. Click **Publish** to make the form live on your site.
+  </Step>
+
+  <Step title="Verify It's Working">
+    Open your website in a new browser tab (use an incognito window to simulate a fresh visitor). Trigger the form using whichever method you configured — move your cursor to the top of the screen for exit intent, or wait for the time delay.
+
+    Fill in the form fields with test data and click submit.
+
+    Back in the Google dashboard, go to **Dashboard → Leads**. Your test submission should appear within a few seconds. If you see it listed, your tracking snippet and form are working correctly.
+
+    <Tip>
+      Use a real email address you have access to for your test lead. This lets you also verify that any automated follow-up emails are delivered and formatted correctly.
+    </Tip>
+  </Step>
+
+  <Step title="Set Up a Follow-Up Campaign">
+    Now that you're capturing leads, put them into an automated welcome sequence. Navigate to **Campaigns → New Campaign**.
+
+    1. **Name your campaign** (for example, "New Lead Welcome Series").
+    2. Under **Audience**, select the lead form you just created as the source — all new submissions will automatically enter this campaign.
+    3. Click **Add Email**, write your welcome message, and set a send delay (for example, send immediately or after 5 minutes).
+    4. Preview the email, then click **Activate Campaign**.
+
+    From this point on, every new lead captured by your form will automatically receive your welcome email.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+<Card title="Build More Advanced Campaigns" icon="envelope" href="/guides/build-campaigns">
+  Learn how to create multi-step drip sequences, segment your audience by behavior, and A/B test your messaging to maximize conversions.
+</Card>

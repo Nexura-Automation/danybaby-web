@@ -1,0 +1,59 @@
+---
+title: "Campaigns and Automated Outreach in Google"
+sidebarTitle: "Campaigns"
+description: "Learn how Google campaigns automate lead outreach through email, SMS, and multi-step drip sequences to drive conversions."
+---
+
+Campaigns are automated outreach sequences that Google sends to a defined audience of leads on your behalf. Rather than messaging leads one at a time, you build a campaign once — defining who receives it, what messages they get, and when — and Google handles delivery, tracking, and reporting automatically. Campaigns are the primary way you move leads from capture to conversion at scale.
+
+## Campaign Types
+
+<CardGroup cols={2}>
+  <Card title="Email Campaign" icon="envelope">
+    Send a sequence of one or more emails to a targeted lead segment. Use email campaigns for welcome sequences, product education, promotional offers, and post-conversion follow-ups. Google tracks open, click, and conversion rates for every message.
+  </Card>
+  <Card title="SMS Campaign" icon="message-sms">
+    Send text message sequences to leads who have provided a phone number. SMS campaigns achieve significantly higher open rates than email and work well for time-sensitive offers, appointment reminders, and re-engagement nudges.
+  </Card>
+  <Card title="Drip Campaign" icon="droplet">
+    Combine email and SMS into a single time-delayed, multi-step sequence. Drip campaigns let you build a coordinated communication journey — for example, an email on day one, an SMS reminder on day three, and a follow-up email on day seven — all from one campaign builder.
+  </Card>
+  <Card title="Re-engagement Campaign" icon="rotate-right">
+    Target leads who have gone cold — no opens, clicks, or site visits in a defined period. Re-engagement campaigns use higher-urgency messaging to revive interest or cleanly disqualify unresponsive leads from your active pipeline.
+  </Card>
+</CardGroup>
+
+## Campaign Lifecycle
+
+Every campaign moves through a predictable set of states. Understanding each state helps you manage active outreach and troubleshoot issues.
+
+| State | Description |
+|---|---|
+| **Draft** | The campaign has been created but not launched. You can freely edit messaging, audience, and trigger settings. No messages are sent while a campaign is in Draft. |
+| **Active** | The campaign is live. Google is enrolling leads that match the audience criteria and sending messages according to the defined schedule. |
+| **Paused** | Outreach is temporarily suspended. Leads already enrolled retain their position in the sequence; no new leads are enrolled. Use Pause when you need to make edits or investigate a deliverability issue. |
+| **Completed** | All enrolled leads have received every step in the sequence, or the campaign's end date has passed. Completed campaigns are read-only but remain fully reportable. |
+
+## Audience Targeting
+
+When you build a campaign, you define the audience — the set of leads who are eligible to receive it. Google lets you combine multiple targeting criteria using AND/OR logic:
+
+- **By tag** — Target leads that have (or do not have) a specific tag, such as `interest:pricing` or `event:webinar-2024`.
+- **By lead source** — Limit the campaign to leads that entered through a particular source, such as a specific form or integration.
+- **By status** — Send only to leads in a particular lifecycle stage, such as all `New` leads or all `Qualified` leads awaiting follow-up.
+- **By custom filter** — Combine any lead property with a condition and value, such as `created_at is after 2024-01-01` or `phone is not empty`.
+
+Build your audience filter under **Campaigns → [campaign] → Audience** before activating the campaign.
+
+## Campaign Triggers
+
+A trigger defines the event that enrolls a lead into a campaign. Choose one trigger per campaign:
+
+- **Lead captured** — Enroll a lead the moment their record is created, regardless of source. Ideal for universal welcome sequences.
+- **Form submitted** — Enroll a lead only when they submit a specific form. Use this to send highly relevant follow-up tied to the exact form the lead completed.
+- **Tag added** — Enroll a lead when a particular tag is applied to their record. This lets other automations, integrations, or manual actions kick off a campaign indirectly.
+- **Manual launch** — You or a team member explicitly selects a set of leads and launches the campaign from the dashboard. Useful for one-off announcements or event invitations.
+
+<Tip>
+  Before activating a campaign to your full audience, test it on a small segment — such as an internal team tag or a handful of test leads — to verify that message content, timing, and personalization tokens all render correctly. This prevents large-scale delivery errors that are difficult to undo once a campaign is live.
+</Tip>

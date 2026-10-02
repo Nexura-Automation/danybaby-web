@@ -1,0 +1,85 @@
+---
+title: "Track Conversions and Measure Campaign ROI"
+sidebarTitle: "Track Conversions"
+description: "Install Google's conversion tracking snippet, define goals, and use analytics to measure ROI and identify your highest-performing campaigns."
+---
+
+Knowing that a lead filled out a form is only the first step. Conversion tracking tells you what happened next — which campaigns drove purchases, which pages produce the most revenue, and where in your funnel visitors are dropping off. With Google's conversion tracking in place, every marketing decision you make is backed by data rather than guesswork. This guide shows you how to install the tracking script, define your goals, and read your conversion reports.
+
+## Installing the Conversion Snippet
+
+The Google conversion snippet must be present on every page of your website. It loads asynchronously and has no measurable impact on page performance. Place the script tag in the `<head>` of your site's global layout or template, replacing `YOUR_SITE_ID` with the ID found under **Settings → General → Site ID**.
+
+```html
+<script
+  src="https://cdn.google.com/conversion.js"
+  data-site-id="YOUR_SITE_ID">
+</script>
+```
+
+If you are using a tag manager such as Google Tag Manager, create a new **Custom HTML** tag with the snippet above, set the trigger to **All Pages**, and publish the container.
+
+**Verify installation:** After adding the snippet, go to **Settings → Integrations → Snippet Checker** and enter any URL on your site. Google will confirm whether the snippet is detected and reporting correctly.
+
+## Defining a Conversion Goal
+
+A conversion goal tells Google what action counts as a success. You can define as many goals as you need — one for each meaningful action in your funnel.
+
+1. Go to **Settings → Goals → New Goal**.
+2. Give the goal a descriptive name (e.g., "Demo Booked", "Checkout Complete").
+3. Choose a goal type:
+
+   | Type | When to use |
+   |---|---|
+   | **Page Visit** | The visitor lands on a specific URL, such as `/thank-you` or `/order-confirmed` |
+   | **Button Click** | The visitor clicks an element identified by a CSS selector, such as `#book-demo-btn` |
+   | **Form Submit** | The visitor successfully submits a form tracked by the Google snippet |
+   | **Custom Event** | You fire a conversion event programmatically from your own code (see below) |
+
+4. Optionally assign a **Monetary Value** to the goal for revenue attribution.
+5. Click **Save Goal**.
+
+## Firing a Custom Conversion Event
+
+For purchases, subscription sign-ups, or any conversion that happens inside a JavaScript-driven flow, fire a custom event using the `window.Google.track` method. Call this function after the conversion action is confirmed — for example, inside your payment success callback or after an API response.
+
+```javascript
+window.Google.track('conversion', {
+  goal: 'purchase',
+  value: 49.99,
+  currency: 'USD',
+  leadId: 'lead_abc123'
+});
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `goal` | `string` | The name of the goal as defined in **Settings → Goals** |
+| `value` | `number` | The monetary value of this conversion |
+| `currency` | `string` | ISO 4217 currency code (e.g., `USD`, `EUR`, `GBP`) |
+| `leadId` | `string` | The Google lead ID to attribute the conversion to a specific contact |
+
+If you do not yet have the `leadId` at conversion time, omit that parameter. Google will attempt to match the conversion to a known lead based on browser session and cookie data.
+
+## Viewing Conversion Reports
+
+Go to **Analytics → Conversions** to access your full conversion dashboard. The report includes:
+
+- **Total Conversions** — the number of times each goal was completed in the selected date range
+- **Conversion Rate** — conversions divided by unique visitors, expressed as a percentage
+- **Revenue Attributed** — total monetary value of all conversions, broken down by campaign and goal
+- **Top Converting Pages** — a ranked list of the pages that generated the most conversions, helping you identify what content and layouts drive results
+
+Use the **Date Range** selector and **Campaign** filter at the top of the report to compare performance across different time periods or isolate a specific campaign's impact.
+
+## Attributing Revenue
+
+When you pass a `value` parameter in either a custom event or a goal definition, Google stores that amount and links it to the originating campaign, lead source, and contact record. Revenue attribution follows a **last-touch** model by default — the final campaign that the lead interacted with before converting receives full credit.
+
+To switch to **first-touch** or **linear** attribution, go to **Settings → Attribution Model** and select your preferred method. This setting applies retroactively to all historical conversion data in your reports.
+
+To review per-contact revenue, open any contact record and scroll to the **Conversions** section. Each conversion event is listed with its timestamp, goal name, and attributed value.
+
+<Note>
+  Conversion data may take up to **15 minutes** to appear in your Analytics dashboard after an event is fired. If you are testing your setup and do not see data immediately, wait a few minutes and refresh the report before troubleshooting.
+</Note>

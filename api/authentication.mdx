@@ -1,0 +1,92 @@
+---
+title: "Authenticate Requests to the Google API"
+sidebarTitle: "Authentication"
+description: "Learn how to generate API keys, attach them to requests as Bearer tokens, manage scopes, and safely rotate credentials."
+---
+
+The Google API uses API key authentication. Every request you make must include a valid API key in the `Authorization` header as a Bearer token. Keys are created in your workspace settings, scoped to specific permissions, and can be rotated or revoked at any time without affecting other keys in your workspace.
+
+## Generating an API Key
+
+To create a new API key, follow these steps in the Google dashboard:
+
+1. Navigate to **Settings → API Keys**.
+2. Click **New Key**.
+3. Enter a descriptive name (for example, `Production Server` or `CI Pipeline`).
+4. Optionally, enter one or more IP addresses to restrict which origins can use the key.
+5. Select the [scopes](#api-key-scopes) your integration requires.
+6. Click **Create**.
+7. Copy the key that appears — you will **not** be able to view it again after closing the dialog.
+
+<Warning>
+  Treat your API key like a password. Never commit it to source control, embed it in client-side code, or share it in plaintext. Store it in an environment variable or a secrets manager such as AWS Secrets Manager, HashiCorp Vault, or Doppler.
+</Warning>
+
+## Using Your API Key
+
+Pass your API key as a `Bearer` token in the `Authorization` header of every request.
+
+<CodeGroup>
+
+```bash curl
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     -H "Content-Type: application/json" \
+     https://api.google.com/v1/leads
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/leads', {
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  }
+});
+const { data } = await res.json();
+```
+
+```python Python
+import requests
+
+headers = {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+}
+res = requests.get('https://api.google.com/v1/leads', headers=headers)
+leads = res.json()['data']
+```
+
+</CodeGroup>
+
+Requests that omit the `Authorization` header, or that supply an invalid or revoked key, receive an HTTP `401 Unauthorized` response.
+
+## API Key Scopes
+
+Scopes define what actions a key is permitted to perform. You assign scopes when you create the key — they cannot be changed afterward without generating a new key.
+
+| Scope               | Permitted Actions                                               |
+|---------------------|-----------------------------------------------------------------|
+| `leads:read`        | List and retrieve lead records                                  |
+| `leads:write`       | Create, update, and delete lead records                         |
+| `campaigns:read`    | List and retrieve campaign records and stats                    |
+| `campaigns:write`   | Create, update, and launch campaigns                            |
+| `conversions:read`  | List and retrieve conversion events                             |
+| `webhooks:manage`   | Register, list, and delete webhook endpoints                    |
+
+Follow the principle of least privilege: grant only the scopes your integration actually needs. A key used only to read reporting data, for example, should have `leads:read`, `campaigns:read`, and `conversions:read` — nothing more.
+
+<Note>
+  API keys are workspace-scoped, not user-scoped. A key has the same access regardless of which team member created it, and it remains valid even if that user leaves the workspace.
+</Note>
+
+## Rotating API Keys
+
+Rotate your keys periodically, and immediately if you suspect a key has been compromised. Follow this sequence to rotate without causing downtime:
+
+1. **Generate the new key** — create a new key in **Settings → API Keys** with the same scopes as the key you are replacing.
+2. **Deploy the new key** — update your environment variable or secrets manager with the new key and redeploy your integration.
+3. **Verify traffic** — confirm your integration is sending requests successfully with the new key.
+4. **Delete the old key** — return to **Settings → API Keys**, find the old key, and click **Revoke**.
+
+<Warning>
+  Never delete the old key before confirming the new key works. Revoking an active key without a replacement will immediately break all requests using it.
+</Warning>

@@ -1,0 +1,87 @@
+---
+title: "Automate Follow-Up Workflows for Leads"
+sidebarTitle: "Automate Follow-Ups"
+description: "Build trigger-based automation workflows in Google to follow up with every new lead instantly, without any manual effort from your team."
+---
+
+Every minute you wait to follow up with a new lead, the chance of converting them drops. Automation workflows in Google eliminate the delay entirely — the moment a visitor submits a form, books a call, or hits any trigger you define, the platform takes action on your behalf. This guide shows you how to build workflows that replace manual follow-up with reliable, personalized, and perfectly timed outreach.
+
+## What Is a Workflow?
+
+A workflow is an automated sequence made up of three building blocks:
+
+- **Trigger** — the event that starts the workflow (e.g., a lead submits a form)
+- **Conditions** — optional filters that check whether a lead meets certain criteria before proceeding (e.g., lead source is "Paid Ad")
+- **Actions** — the tasks Google performs when a lead enters the workflow (e.g., send an email, add a tag, notify a team member)
+
+Workflows run in the background, 24/7, for every lead that matches your trigger — no manual intervention required.
+
+## Create a Workflow
+
+<Steps>
+  <Step title="Open the Workflow Builder">
+    Go to **Automation → New Workflow** in your Google dashboard.
+  </Step>
+  <Step title="Choose a Trigger">
+    Select the event that will start the workflow. Available triggers include:
+
+    - **Lead Captured** — fires when any new lead is created in the system
+    - **Tag Added** — fires when a specific tag is applied to a contact
+    - **Form Submitted** — fires when a lead submits a specific form you choose
+    - **Conversion Completed** — fires when a lead reaches a defined conversion goal
+  </Step>
+  <Step title="Add Conditions (Optional)">
+    Click **Add Condition** after the trigger to narrow down which leads enter the workflow. Filter by:
+
+    - **Lead Source** — e.g., only leads from your "Pricing Page" pop-up
+    - **Tag** — e.g., only leads tagged `enterprise`
+    - **Field Value** — e.g., only leads where the "Company Size" field is greater than 50
+
+    Conditions use AND logic by default. Toggle to OR logic using the operator dropdown between conditions.
+  </Step>
+  <Step title="Add Actions">
+    Click **Add Action** to define what happens when a lead enters the workflow. You can chain as many actions as needed:
+
+    | Action | Description |
+    |---|---|
+    | **Send Email** | Deliver a specific email template to the lead |
+    | **Send SMS** | Send a text message to the lead's phone number |
+    | **Add Tag** | Apply a tag to the contact record |
+    | **Update Status** | Change the lead's status (e.g., Active → Qualified) |
+    | **Notify Team Member** | Send an internal alert to a team member's email |
+    | **Wait** | Pause the workflow for a defined number of hours or days |
+  </Step>
+  <Step title="Activate the Workflow">
+    Click **Activate** in the top-right corner of the workflow builder. The workflow will begin processing new leads that match your trigger immediately. Leads who already exist in your system before activation are not enrolled retroactively unless you use the **Enroll Existing Leads** option.
+  </Step>
+</Steps>
+
+## Example Workflow: New Lead Welcome Sequence
+
+Here is a complete welcome sequence you can replicate for any new lead coming through your site forms:
+
+1. **Trigger:** Lead Captured via any form
+2. **Action:** Send welcome email immediately — introduce your product, set expectations, and provide a clear next step
+3. **Action:** Wait 1 day
+4. **Action:** Send follow-up email with a case study link — show social proof relevant to the lead's industry
+5. **Action:** Wait 2 days
+6. **Condition:** Check for reply or engagement — if the lead has not opened either email
+7. **Action:** Add tag `needs-call`
+8. **Action:** Notify sales rep — send an internal email with the lead's name, contact details, and timeline
+
+This sequence ensures every new lead receives a warm, consistent introduction without requiring your sales team to monitor inboxes manually. The tag and notification in the final step create a clear handoff signal for human follow-up.
+
+## Using Conditions for If/Else Branching
+
+Conditions let you split a single workflow into multiple paths based on lead properties, so each segment receives the most relevant content.
+
+**Example:** You capture both enterprise and SMB leads through the same form. Rather than building two separate workflows, add a condition branch:
+
+- **If** tag equals `enterprise` → **Send Email** with your enterprise solution deck and assign to the enterprise sales queue
+- **Else** → **Send Email** with the SMB pricing guide and add tag `smb-nurture`
+
+To build this in Google, click **Add Condition** between any two actions and select **Branch**. Define your condition on the left path and Google will automatically create an **Else** path for all contacts that do not match.
+
+<Tip>
+  Review your workflow performance regularly under **Analytics → Workflows**. You will see open rates, click rates, and completion rates for every step — use this data to identify where leads are dropping off and adjust your timing or copy accordingly.
+</Tip>

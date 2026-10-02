@@ -1,0 +1,115 @@
+---
+title: "Google REST API — Overview and Concepts"
+sidebarTitle: "Overview"
+description: "Explore the Google REST API to manage leads, campaigns, conversions, and webhooks programmatically from any application."
+---
+
+The Google REST API gives you full programmatic access to your conversion platform — create and update leads, launch campaigns, log conversion events, and configure webhooks, all over HTTPS with JSON. Every endpoint follows standard REST conventions, so you can integrate with any language or framework that can make HTTP requests.
+
+## Base URL
+
+All API requests target the following base URL:
+
+```
+https://api.google.com/v1
+```
+
+Prefix every endpoint path shown in this reference with this URL. For example, the leads list endpoint is `https://api.google.com/v1/leads`.
+
+## Request Format
+
+All requests must send and receive data as JSON. Include the `Content-Type: application/json` header on any request that has a body (POST, PATCH, PUT).
+
+```bash
+Content-Type: application/json
+Authorization: Bearer YOUR_API_KEY
+```
+
+<Tip>
+  Omitting `Content-Type: application/json` on requests with a body is the most common cause of `400 Bad Request` errors. Always include it.
+</Tip>
+
+## Response Format
+
+Every response body is JSON. Successful responses wrap the primary resource or collection in a `data` key, and include a `meta` object with a unique `request_id` you can provide to support when troubleshooting.
+
+```json
+{
+  "data": { ... },
+  "meta": {
+    "request_id": "req_abc123"
+  }
+}
+```
+
+HTTP status codes follow standard semantics — `2xx` indicates success, `4xx` indicates a client error, and `5xx` indicates a server-side problem.
+
+## Pagination
+
+All list endpoints return paginated results. Use the `page` and `per_page` query parameters to navigate through large collections.
+
+| Parameter  | Default | Maximum | Description                        |
+|------------|---------|---------|------------------------------------|
+| `page`     | `1`     | —       | The page number to retrieve        |
+| `per_page` | `25`    | `100`   | Number of records per page         |
+
+Paginated responses include a `pagination` object alongside `data`:
+
+```json
+{
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "per_page": 25,
+    "total": 342,
+    "total_pages": 14
+  }
+}
+```
+
+Use `pagination.total_pages` to determine when you have fetched all records, and increment `page` to walk through the full result set.
+
+## Rate Limits
+
+The API allows **1,000 requests per minute** per API key. Every response includes the following headers so you can track your current usage:
+
+| Header                  | Description                                                  |
+|-------------------------|--------------------------------------------------------------|
+| `X-RateLimit-Remaining` | Number of requests remaining in the current window          |
+| `X-RateLimit-Reset`     | Unix timestamp (UTC) when the rate limit window resets      |
+
+When you exceed the limit the API returns HTTP `429 Too Many Requests`. Wait until the time indicated by `X-RateLimit-Reset` before retrying.
+
+<Warning>
+  Implement exponential backoff in your integration to handle `429` responses gracefully. Tight retry loops will extend the time before your limit resets.
+</Warning>
+
+## Error Responses
+
+When a request fails, the response body contains an `error` object with a machine-readable `code`, a human-readable `message`, and an optional `details` array that pinpoints field-level validation issues.
+
+```json
+{
+  "error": {
+    "code": "validation_failed",
+    "message": "The email field is required.",
+    "details": [
+      { "field": "email", "issue": "required" }
+    ]
+  }
+}
+```
+
+The table below lists the HTTP status codes you may encounter:
+
+| Status | Code                    | Meaning                                                          |
+|--------|-------------------------|------------------------------------------------------------------|
+| `400`  | Bad Request             | Malformed JSON or missing required headers                       |
+| `401`  | Unauthorized            | API key is missing or invalid                                    |
+| `403`  | Forbidden               | Your API key lacks the required scope for this action            |
+| `404`  | Not Found               | The requested resource does not exist                            |
+| `422`  | Unprocessable Entity    | Request is well-formed but fails business-logic validation       |
+| `429`  | Too Many Requests       | Rate limit exceeded — see `X-RateLimit-Reset`                   |
+| `500`  | Internal Server Error   | Something went wrong on the Google platform side                 |
+
+For details on obtaining and sending an API key, see the [Authentication](/api/authentication) guide.

@@ -1,0 +1,313 @@
+---
+title: "Leads API — Manage and Query Your Leads"
+sidebarTitle: "Leads"
+description: "Create, retrieve, update, delete, and filter lead records in your Google workspace using the Leads REST API endpoints."
+---
+
+The Leads API lets you programmatically manage every contact in your conversion funnel. You can import leads from external sources, query and filter your existing database, update lead status and tags as they move through your pipeline, and permanently delete records you no longer need. All endpoints require an API key with at least the `leads:read` scope; write operations additionally require `leads:write`.
+
+---
+
+## List leads
+
+Retrieve a paginated list of all leads in your workspace. You can narrow results using the query parameters below.
+
+**`GET /leads`**
+
+<ParamField query="status" type="string">
+  Filter by lead status. Accepted values: `new`, `contacted`, `qualified`, `converted`.
+</ParamField>
+
+<ParamField query="tag" type="string">
+  Return only leads that have this tag applied.
+</ParamField>
+
+<ParamField query="source" type="string">
+  Filter leads by their acquisition source, for example `exit-intent-form` or `paid-search`.
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Page number to retrieve.
+</ParamField>
+
+<ParamField query="per_page" type="integer" default="25">
+  Number of leads to return per page. Maximum `100`.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -G https://api.google.com/v1/leads \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d status=new \
+  -d per_page=10
+```
+
+```javascript JavaScript
+const params = new URLSearchParams({ status: 'new', per_page: 10 });
+const res = await fetch(`https://api.google.com/v1/leads?${params}`, {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data, pagination } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "lead_abc123",
+      "email": "jane@example.com",
+      "name": "Jane Doe",
+      "phone": "+14155552671",
+      "status": "new",
+      "source": "exit-intent-form",
+      "tags": ["high-intent", "trial"],
+      "created_at": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "lead_def456",
+      "email": "john@example.com",
+      "name": "John Smith",
+      "phone": null,
+      "status": "new",
+      "source": "paid-search",
+      "tags": [],
+      "created_at": "2024-01-14T08:12:44Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 10,
+    "total": 84,
+    "total_pages": 9
+  },
+  "meta": { "request_id": "req_1a2b3c" }
+}
+```
+
+---
+
+## Create a lead
+
+Manually create a new lead record in your workspace. This is useful for server-side lead capture flows where you collect contact details before redirecting to your site.
+
+**`POST /leads`**
+
+<ParamField body="email" type="string" required>
+  The lead's email address. Must be a valid email format and unique within your workspace.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Full name of the lead.
+</ParamField>
+
+<ParamField body="phone" type="string">
+  Phone number in E.164 format, for example `+14155552671`.
+</ParamField>
+
+<ParamField body="source" type="string">
+  Acquisition source label, for example `webinar-signup` or `referral`.
+</ParamField>
+
+<ParamField body="tags" type="array">
+  An array of string tags to apply to this lead on creation.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://api.google.com/v1/leads \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "sarah@example.com",
+    "name": "Sarah Connor",
+    "phone": "+14085559823",
+    "source": "webinar-signup",
+    "tags": ["enterprise", "2024-q1"]
+  }'
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/leads', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    email: 'sarah@example.com',
+    name: 'Sarah Connor',
+    phone: '+14085559823',
+    source: 'webinar-signup',
+    tags: ['enterprise', '2024-q1']
+  })
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "lead_ghi789",
+    "email": "sarah@example.com",
+    "name": "Sarah Connor",
+    "phone": "+14085559823",
+    "status": "new",
+    "source": "webinar-signup",
+    "tags": ["enterprise", "2024-q1"],
+    "created_at": "2024-01-16T14:22:05Z"
+  },
+  "meta": { "request_id": "req_4d5e6f" }
+}
+```
+
+---
+
+## Retrieve a lead
+
+Fetch a single lead by its unique ID.
+
+**`GET /leads/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the lead, for example `lead_abc123`.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl https://api.google.com/v1/leads/lead_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/leads/lead_abc123', {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "lead_abc123",
+    "email": "jane@example.com",
+    "name": "Jane Doe",
+    "phone": "+14155552671",
+    "status": "contacted",
+    "source": "exit-intent-form",
+    "tags": ["high-intent", "trial"],
+    "created_at": "2024-01-15T10:30:00Z"
+  },
+  "meta": { "request_id": "req_7g8h9i" }
+}
+```
+
+---
+
+## Update a lead
+
+Modify one or more properties of an existing lead. Only fields you include in the request body are changed — omitted fields retain their current values.
+
+**`PATCH /leads/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the lead to update.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Updated full name.
+</ParamField>
+
+<ParamField body="phone" type="string">
+  Updated phone number in E.164 format.
+</ParamField>
+
+<ParamField body="status" type="string">
+  Updated lead status. Accepted values: `new`, `contacted`, `qualified`, `converted`.
+</ParamField>
+
+<ParamField body="tags" type="array">
+  Replaces the lead's existing tags with this array. Pass an empty array `[]` to remove all tags.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -X PATCH https://api.google.com/v1/leads/lead_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "status": "qualified", "tags": ["high-intent", "demo-booked"] }'
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/leads/lead_abc123', {
+  method: 'PATCH',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ status: 'qualified', tags: ['high-intent', 'demo-booked'] })
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "lead_abc123",
+    "email": "jane@example.com",
+    "name": "Jane Doe",
+    "phone": "+14155552671",
+    "status": "qualified",
+    "source": "exit-intent-form",
+    "tags": ["high-intent", "demo-booked"],
+    "created_at": "2024-01-15T10:30:00Z"
+  },
+  "meta": { "request_id": "req_j1k2l3" }
+}
+```
+
+---
+
+## Delete a lead
+
+Permanently delete a lead and all associated data from your workspace.
+
+**`DELETE /leads/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the lead to delete.
+</ParamField>
+
+<Warning>
+  Deleting a lead is irreversible. All conversion events, campaign interactions, and history associated with this lead are also permanently removed. There is no undo.
+</Warning>
+
+<CodeGroup>
+
+```bash curl
+curl -X DELETE https://api.google.com/v1/leads/lead_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+await fetch('https://api.google.com/v1/leads/lead_abc123', {
+  method: 'DELETE',
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+// Successful deletion returns HTTP 204 with no response body
+```
+
+</CodeGroup>
+
+A successful deletion returns HTTP **204 No Content** with an empty response body.

@@ -1,0 +1,78 @@
+---
+title: "Analytics and Conversion Reporting in Google"
+sidebarTitle: "Analytics"
+description: "Use Google's analytics suite to measure funnel performance, campaign results, and lead source ROI across your entire pipeline."
+---
+
+Analytics in Google give you a clear, quantified view of how well your funnel is working — from the first impression a visitor has on your site through to a completed conversion. Instead of guessing which campaigns, forms, or pages are driving results, you use data to make deliberate improvements. Every metric in the Google analytics suite traces back to a real lead record, so numbers are always accurate and attributable.
+
+## Dashboard Overview
+
+The **Analytics Dashboard** surfaces the four most important top-level numbers in your account at a glance. You can filter all metrics by date range using the picker in the top-right corner of the dashboard.
+
+| Metric | What It Measures |
+|---|---|
+| **Total Leads** | The number of lead records created in the selected date range across all sources and forms. |
+| **Conversion Rate** | The percentage of total leads who completed at least one tracked conversion event in the period. |
+| **Revenue Attributed** | The total revenue from conversion events where a monetary value has been recorded (for example, Shopify purchases or Stripe payments synced via integration). |
+| **Active Campaigns** | The number of campaigns currently in an Active state, with at least one lead enrolled. |
+
+## Funnel Reports
+
+The **Funnel Report** visualizes your full conversion funnel — Awareness, Engagement, Capture, and Conversion — for any page, form, or campaign combination you select. Each stage displays an absolute count and a drop-off percentage so you can instantly see where visitors are leaving.
+
+To open a funnel report, navigate to **Analytics → Funnel Reports** and select a page or campaign from the dropdown. Use the **Compare** toggle to overlay two date ranges side by side and measure the impact of a recent change.
+
+Drop-off rates at each stage point to specific actions:
+
+- High drop-off between Awareness and Engagement usually signals a timing or placement issue with your capture element.
+- High drop-off between Engagement and Capture suggests the form itself — headline, length, or required fields — needs optimization.
+- High drop-off between Capture and Conversion indicates a campaign messaging or offer issue that prevents leads from following through.
+
+## Campaign Performance
+
+The **Campaign Performance** report shows delivery and engagement metrics for every campaign step. Select a campaign from **Analytics → Campaigns** to see a breakdown by message:
+
+| Metric | Definition |
+|---|---|
+| **Open Rate** | The percentage of delivered emails that were opened at least once. |
+| **Click Rate** | The percentage of delivered messages that resulted in at least one tracked link click. |
+| **Reply Rate** | The percentage of delivered emails that received a direct reply (email campaigns only). |
+| **Conversion Rate** | The percentage of leads enrolled in the campaign who completed the target conversion event. |
+
+Use these metrics together to identify which step in a sequence is underperforming — a strong open rate with a low click rate, for example, means the subject line is working but the message body or call-to-action needs revision.
+
+## Lead Source Report
+
+The **Lead Source Report** breaks down your total leads by the channel or source that created them, so you can understand where your highest-volume and highest-converting leads actually come from.
+
+Sources are grouped into four categories by default:
+
+- **Organic** — Leads captured from visitors who arrived via unpaid search, direct URL entry, or untracked referrals.
+- **Paid** — Leads from visitors tagged with UTM parameters associated with paid advertising campaigns (Google Ads, Meta, and others).
+- **Referral** — Leads from visitors who arrived via a tracked referral link or partner URL.
+- **Direct** — Leads created manually or through the API without an associated traffic source.
+
+You can drill into any source category to see a per-form or per-page breakdown of lead volume and conversion rate.
+
+## A/B Test Results
+
+When you run an A/B test on a form headline, pop-up copy, or campaign subject line, Google tracks variant performance in the **A/B Test Results** report under **Analytics → A/B Tests**.
+
+Each active or completed test displays:
+
+- **Variant A and Variant B** side by side with their respective engagement or open rates.
+- A **statistical significance indicator** that shows whether the difference between variants is likely to be real or the result of random variation. Google requires at least 95% confidence before flagging a winner.
+- A **Declare Winner** button that becomes active once significance is reached, letting you permanently apply the winning variant with one click.
+
+Avoid ending tests early — wait for the significance indicator before drawing conclusions to prevent acting on misleading data.
+
+## Exporting Data
+
+Every report in the Google analytics suite supports CSV export. Click the **Export** button in the top-right corner of any report table to download the currently filtered data set as a `.csv` file, compatible with Excel, Google Sheets, and any BI tool.
+
+Before exporting, use the **Date Range** filter to scope your data precisely. You can also combine the date filter with audience or source filters to export highly specific slices — for example, all leads from paid sources who converted in Q1.
+
+<Tip>
+  Review your analytics dashboard at least once a week. Conversion rates and drop-off patterns can shift quickly after a site change, a new campaign launch, or a seasonal traffic spike. Catching a sudden increase in funnel drop-off early lets you diagnose and fix the issue before it costs you a significant number of leads.
+</Tip>

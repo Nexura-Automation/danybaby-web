@@ -1,0 +1,94 @@
+---
+title: "Capture Leads with Forms and Pop-Ups"
+sidebarTitle: "Capture Leads"
+description: "Learn how to build, configure, and publish lead capture forms and pop-ups that turn your website visitors into qualified leads."
+---
+
+Lead capture is the foundation of every successful conversion strategy. By placing the right form or pop-up in front of visitors at the right moment, you collect the contact details you need to start a conversation and move prospects through your funnel. This guide walks you through every step — from choosing a capture method to publishing your first form and embedding it on your site.
+
+## Choose a Capture Method
+
+Google offers three ways to capture leads. Choose the method that best fits your page layout and visitor behavior.
+
+**Inline Form** — Embed a form directly within a page's content. Inline forms work well on high-intent pages such as pricing, contact, or landing pages, where visitors are already looking for a way to reach you.
+
+**Pop-Up** — Display a form triggered by a specific visitor behavior. Pop-ups are ideal for capturing leads who are about to leave or who have demonstrated engagement by scrolling or spending time on your page. Available triggers include:
+
+- **Exit Intent** — fires when the visitor's cursor moves toward the browser's close button or address bar
+- **Time on Page** — fires after the visitor has been on the page for a set number of seconds (e.g., 30 seconds)
+- **Scroll Depth** — fires when the visitor scrolls past a defined percentage of the page (e.g., 50%)
+
+**Landing Page** — A standalone, Google-hosted page built entirely around a single conversion goal. No website required — just share the URL.
+
+## Create Your First Form
+
+<Steps>
+  <Step title="Open the Form Builder">
+    Go to **Capture → Forms → New Form** in your Google dashboard.
+  </Step>
+  <Step title="Choose a Starting Point">
+    Select a pre-built template matched to your goal (Newsletter Sign-Up, Book a Demo, Download a Resource) or click **Start from Blank** to build from scratch.
+  </Step>
+  <Step title="Add and Arrange Fields">
+    Click **Add Field** to insert any of the following field types:
+
+    - **Name** — single-line text
+    - **Email** — validated email input
+    - **Phone** — formatted phone number input
+    - **Custom Field** — text, dropdown, checkbox, or date
+
+    Drag fields up or down to reorder them. Mark any field as **Required** by toggling the switch next to it.
+  </Step>
+  <Step title="Set the Trigger (Pop-Ups Only)">
+    If you chose the Pop-Up method, open the **Trigger** tab and select one of the following:
+
+    - **Exit Intent** — activates when the cursor exits the viewport
+    - **Time on Page** — enter a delay in seconds (e.g., `30`)
+    - **Scroll Depth** — enter a scroll percentage (e.g., `50`)
+
+    You can combine triggers using **OR** logic so the pop-up fires on whichever condition is met first.
+  </Step>
+  <Step title="Customize Copy and Appearance">
+    Update the **Headline**, **Subheadline**, **CTA Button Text**, and **Success Message** under the **Content** tab. Switch to the **Design** tab to match your brand colors and font.
+  </Step>
+  <Step title="Publish and Deploy">
+    Click **Publish** in the top-right corner. Google will present two options:
+
+    - **Embed Code** — copy the snippet and paste it into your site (see below)
+    - **Enable Pop-Up** — toggle the pop-up on for the URLs you specify in the **Display Rules** panel
+  </Step>
+</Steps>
+
+## Embed an Inline Form on Your Site
+
+After publishing, copy your form's embed code from the **Embed** tab and add it to any page on your site. Replace `FORM_ID` with the ID shown in your dashboard.
+
+```html
+<div id="google-form" data-form-id="FORM_ID"></div>
+<script src="https://cdn.google.com/forms.js"></script>
+```
+
+The script loads asynchronously and will not affect your page's load time. The form renders responsively and adapts to any container width.
+
+## Setting Up Exit Intent
+
+Exit intent detection tracks the velocity and direction of the visitor's mouse. When the cursor accelerates toward the top edge of the browser window — the typical motion before closing a tab or typing a new URL — Google fires the pop-up trigger.
+
+**To enable exit intent:**
+
+1. Open your pop-up form and go to the **Trigger** tab.
+2. Select **Exit Intent** from the trigger list.
+3. Set a **Session Cooldown** (e.g., 24 hours) so the same visitor does not see the pop-up on every page view.
+4. Optionally, restrict the trigger to specific pages using **Display Rules → URL contains**.
+
+**Best practices for exit intent pop-ups:**
+
+- Lead with value, not alarm — offer a discount, free resource, or clear benefit rather than a generic "Wait, don't go!" headline.
+- Keep the form to one or two fields. The visitor is already leaving; friction will cost you the conversion.
+- Test your headline copy using A/B testing in **Campaigns → A/B Tests**.
+
+<Tip>
+  Forms with two or three fields consistently outperform longer forms. Collect only the data you need to start the conversation — you can capture additional details later through your follow-up workflow.
+</Tip>
+
+Once your form is live and capturing submissions, set up automated follow-up messages to engage every new lead instantly. See [Automate Follow-Up Workflows](/guides/automate-followups) to get started.

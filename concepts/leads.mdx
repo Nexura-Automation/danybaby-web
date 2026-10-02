@@ -1,0 +1,74 @@
+---
+title: "What Leads Are and How They Work in Google"
+sidebarTitle: "Leads"
+description: "Understand how Google defines, stores, scores, and organizes leads throughout their lifecycle from capture to conversion."
+---
+
+A lead is any person who has submitted their contact information through one of your Google capture elements — a form, a pop-up, or an API call. Once created, a lead record lives in your Google workspace and serves as the central object that campaigns, automations, and reports are built around. Every interaction that person has with your messages or pages is appended to their record, giving you a full picture of their journey.
+
+## Lead Properties
+
+Each lead record contains the following fields. You can view and edit these fields from **Leads → [lead name]** in the dashboard, or read and write them via the [Leads API](/api/leads).
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | string | A unique, immutable identifier assigned by Google at creation. |
+| `email` | string | The lead's email address. Used as the primary deduplication key. |
+| `name` | string | The lead's full name as submitted on the capture form. |
+| `phone` | string | An optional phone number, required for SMS campaigns. |
+| `source` | string | How the lead was created: `form`, `api`, `manual`, or an integration name. |
+| `status` | enum | The lead's current lifecycle stage (see below). |
+| `created_at` | timestamp | The ISO 8601 date and time the lead record was created. |
+| `tags` | array | A list of string labels applied to the lead for segmentation. |
+
+## Lead Statuses
+
+Google moves leads through a defined lifecycle so you always know where each person stands in your sales or marketing process.
+
+<Steps>
+  <Step title="New">
+    The lead has just been captured. No outreach has been sent yet. Newly created leads land here by default.
+  </Step>
+  <Step title="Contacted">
+    At least one campaign message has been delivered to the lead. Google sets this status automatically when a campaign sends its first step.
+  </Step>
+  <Step title="Qualified">
+    The lead has met a qualification threshold — either manually set by your team or triggered automatically by a lead score rule. Use this status to flag leads that are ready for a sales follow-up.
+  </Step>
+  <Step title="Converted">
+    The lead completed the target conversion event. Google sets this status when a conversion is recorded and stops active campaign enrollment to avoid messaging customers unnecessarily.
+  </Step>
+</Steps>
+
+You can also mark a lead as **Disqualified** at any point. Disqualified leads are excluded from all active campaigns and do not count toward your conversion metrics.
+
+## Lead Sources
+
+Google records how every lead entered your workspace using the `source` field:
+
+- **Form submission** — The most common source. Google captures the lead when a visitor submits an embedded form, pop-up, or landing page form you have built in the platform.
+- **API** — Your server or another tool sent a `POST /leads` request directly to the Google API. Use this for server-side sign-up flows or third-party integrations not covered by native connectors.
+- **Manual entry** — A member of your team added the lead directly from the dashboard using **Leads → Add Lead**.
+- **Integrations** — Native connectors (Shopify, Stripe, Typeform, and others) push leads into Google automatically when a relevant event occurs in the source platform.
+
+## Tagging and Segmentation
+
+Tags are free-form labels you attach to leads to create meaningful segments for targeting and reporting. Use tags to represent anything relevant to your business — product interest, geographic region, lifecycle intent, or event attendance.
+
+You can apply tags in three ways:
+
+1. **Form rules** — Add a hidden tag field to any form so every lead captured from that form is automatically tagged (for example, `source:homepage-hero`).
+2. **Campaign actions** — Trigger a tag to be added or removed when a lead opens an email, clicks a link, or reaches a specific campaign step.
+3. **Manual application** — Select one or more leads from the **Leads** table and use **Actions → Add Tag** to apply a tag in bulk.
+
+Once your leads are tagged, use **Campaigns → Audience → Filter by Tag** to target specific segments precisely.
+
+## Lead Score
+
+Google automatically calculates a **lead score** for every lead based on engagement signals — email opens, link clicks, page visits, and form interactions. Scores range from 0 to 100 and update in real time as new activity is recorded.
+
+Use lead scores to prioritize follow-up, trigger qualification automations, or filter your highest-intent leads into a dedicated campaign. You can customize the scoring weights for each signal type under **Settings → Lead Scoring**.
+
+<Note>
+  All lead data is stored in compliance with GDPR, CCPA, and other applicable data protection regulations. Google encrypts lead records at rest and in transit, and honors deletion and export requests automatically. For full details on data handling, retention periods, and your responsibilities as a data controller, review our [Privacy and Data Policy](https://google.com/privacy).
+</Note>

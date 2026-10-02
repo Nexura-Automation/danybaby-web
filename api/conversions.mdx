@@ -1,0 +1,232 @@
+---
+title: "Conversions API — Log and Query Conversion Events"
+sidebarTitle: "Conversions"
+description: "Log server-side conversion events and query your conversion history by goal, lead, or date range using the Google Conversions API."
+---
+
+The Conversions API lets you record and retrieve conversion events that happen in your product or on your server. You can log any meaningful action — a purchase, a plan upgrade, a demo booked — along with an optional monetary value, the lead it belongs to, and arbitrary metadata. Server-side conversion logging complements client-side tracking and is essential for capturing events that happen outside the browser, such as back-end subscription activations or payment processor callbacks. All endpoints require an API key with at least the `conversions:read` scope; logging new conversions requires `conversions:read` plus `leads:read`.
+
+---
+
+## List conversions
+
+Retrieve a paginated list of conversion events, with optional filters by goal, lead, or date range.
+
+**`GET /conversions`**
+
+<ParamField query="goal" type="string">
+  Filter by conversion goal name, for example `purchase` or `demo-booked`.
+</ParamField>
+
+<ParamField query="lead_id" type="string">
+  Return only conversions attributed to this lead ID.
+</ParamField>
+
+<ParamField query="date_from" type="string">
+  ISO 8601 date-time. Return only conversions at or after this timestamp, for example `2024-01-01T00:00:00Z`.
+</ParamField>
+
+<ParamField query="date_to" type="string">
+  ISO 8601 date-time. Return only conversions at or before this timestamp.
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Page number to retrieve.
+</ParamField>
+
+<ParamField query="per_page" type="integer" default="25">
+  Number of records per page. Maximum `100`.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -G https://api.google.com/v1/conversions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d goal=purchase \
+  -d date_from=2024-01-01T00:00:00Z
+```
+
+```javascript JavaScript
+const params = new URLSearchParams({
+  goal: 'purchase',
+  date_from: '2024-01-01T00:00:00Z'
+});
+const res = await fetch(`https://api.google.com/v1/conversions?${params}`, {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data, pagination } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "conv_111aaa",
+      "goal": "purchase",
+      "value": 99.00,
+      "currency": "USD",
+      "lead_id": "lead_abc123",
+      "page_url": "https://yourapp.com/checkout/success",
+      "created_at": "2024-01-15T18:44:22Z"
+    },
+    {
+      "id": "conv_222bbb",
+      "goal": "purchase",
+      "value": 299.00,
+      "currency": "USD",
+      "lead_id": "lead_def456",
+      "page_url": null,
+      "created_at": "2024-01-14T11:09:03Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 25,
+    "total": 58,
+    "total_pages": 3
+  },
+  "meta": { "request_id": "req_b1c2d3" }
+}
+```
+
+---
+
+## Log a conversion
+
+Record a new server-side conversion event. Use this endpoint from your back end when a significant action occurs — a payment is confirmed, a subscription is activated, or a form is submitted — especially when the event is not directly observable in the browser.
+
+**`POST /conversions`**
+
+<ParamField body="goal" type="string" required>
+  A string label identifying the type of conversion, for example `purchase`, `trial-start`, or `demo-booked`. Consistent naming makes filtering and reporting more accurate.
+</ParamField>
+
+<ParamField body="lead_id" type="string">
+  The ID of the lead to attribute this conversion to. If omitted, the conversion is logged as unattributed.
+</ParamField>
+
+<ParamField body="value" type="number">
+  The monetary value of the conversion, for example `99.00`. Used in revenue reporting.
+</ParamField>
+
+<ParamField body="currency" type="string" default="USD">
+  ISO 4217 currency code for the `value` field, for example `USD`, `EUR`, or `GBP`.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  A free-form key-value object for any additional context you want to store with this event, such as plan name, coupon code, or originating page.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://api.google.com/v1/conversions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "goal": "purchase",
+    "lead_id": "lead_abc123",
+    "value": 99.00,
+    "currency": "USD",
+    "metadata": { "plan": "pro", "source": "checkout" }
+  }'
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/conversions', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    goal: 'purchase',
+    lead_id: 'lead_abc123',
+    value: 99.00,
+    currency: 'USD',
+    metadata: { plan: 'pro', source: 'checkout' }
+  })
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+**Request body:**
+
+```json
+{
+  "goal": "purchase",
+  "lead_id": "lead_abc123",
+  "value": 99.00,
+  "currency": "USD",
+  "metadata": { "plan": "pro", "source": "checkout" }
+}
+```
+
+```json Response
+{
+  "data": {
+    "id": "conv_333ccc",
+    "goal": "purchase",
+    "value": 99.00,
+    "currency": "USD",
+    "lead_id": "lead_abc123",
+    "metadata": { "plan": "pro", "source": "checkout" },
+    "page_url": null,
+    "created_at": "2024-01-16T16:05:37Z"
+  },
+  "meta": { "request_id": "req_e4f5g6" }
+}
+```
+
+<Tip>
+  For browser-side events — such as a button click or a page visit — you can also use `window.Google.track('goal-name', { value: 99.00 })` in your client-side snippet. The server-side API and the client-side snippet write to the same conversion log, so you can use whichever method fits the context of each event.
+</Tip>
+
+---
+
+## Retrieve a conversion
+
+Fetch the full details of a single conversion event by its ID.
+
+**`GET /conversions/{id}`**
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the conversion event, for example `conv_111aaa`.
+</ParamField>
+
+<CodeGroup>
+
+```bash curl
+curl https://api.google.com/v1/conversions/conv_111aaa \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const res = await fetch('https://api.google.com/v1/conversions/conv_111aaa', {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+const { data } = await res.json();
+```
+
+</CodeGroup>
+
+```json Response
+{
+  "data": {
+    "id": "conv_111aaa",
+    "goal": "purchase",
+    "value": 99.00,
+    "currency": "USD",
+    "lead_id": "lead_abc123",
+    "metadata": { "plan": "pro", "source": "checkout" },
+    "page_url": "https://yourapp.com/checkout/success",
+    "created_at": "2024-01-15T18:44:22Z"
+  },
+  "meta": { "request_id": "req_h7i8j9" }
+}
+```

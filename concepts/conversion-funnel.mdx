@@ -1,0 +1,49 @@
+---
+title: "Understanding the Conversion Funnel in Google"
+sidebarTitle: "Conversion Funnel"
+description: "Learn how Google models the journey from anonymous visitor to paying customer across four distinct funnel stages."
+---
+
+The conversion funnel is the backbone of how Google tracks and improves the journey a visitor takes from first landing on your site to completing a meaningful action — a purchase, a booking, or a sign-up. Every visitor enters at the top of the funnel, and your goal is to move as many of them as possible through each stage by presenting the right message at the right moment.
+
+## The Four Funnel Stages
+
+<Steps>
+  <Step title="Awareness">
+    A visitor lands on one of your tracked pages. Google registers an **impression** and begins monitoring the session. At this stage, the visitor has no relationship with your business yet — your job is to capture their attention before they leave.
+  </Step>
+  <Step title="Engagement">
+    The visitor interacts with a lead capture element — a pop-up, inline form, slide-in widget, or embedded survey. Google records this as an **engagement event** and starts attributing behavior data to the session.
+  </Step>
+  <Step title="Capture">
+    The visitor submits their contact information. They are now a **lead** in your Google workspace. Google stores their details, assigns a source, and can immediately enroll them in a campaign or trigger a webhook to your CRM.
+  </Step>
+  <Step title="Conversion">
+    The lead completes a desired action — making a purchase, booking a call, or activating an account. Google records this as a **conversion event** and attributes it back through the funnel so you can see exactly which page, form, and campaign drove the result.
+  </Step>
+</Steps>
+
+## Funnel Metrics
+
+Google computes four core metrics automatically for every funnel you configure. Use these numbers to diagnose where visitors are dropping off and where your biggest optimization opportunities lie.
+
+| Metric | Definition |
+|---|---|
+| **Impressions** | The total number of times a tracked page or campaign element was viewed by a unique session. |
+| **Engagement Rate** | The percentage of impressions that resulted in an interaction with a capture element. |
+| **Capture Rate** | The percentage of engagements that resulted in a lead submission. |
+| **Conversion Rate** | The percentage of captured leads that completed the target conversion event. |
+
+## Optimizing Your Funnel
+
+Once your funnel is live, use Google's built-in tools to systematically improve each stage:
+
+- **A/B test your headlines.** Run two variants of your form headline simultaneously and let Google determine a winner based on engagement rate. Navigate to **Forms → [your form] → A/B Tests** to create a new test.
+- **Tune your timing triggers.** Adjust when a pop-up appears — on exit intent, after a time delay, or after a scroll depth threshold — to maximize engagement without harming user experience.
+- **Personalize your messages.** Use dynamic tokens like `{{visitor.city}}` or `{{lead.first_name}}` to tailor headlines and body copy to individual visitors, increasing relevance and capture rate.
+
+<Tip>
+  Start your optimization efforts on a single high-traffic page rather than rolling out changes site-wide. A focused test gives you cleaner data faster and lets you validate improvements before scaling them across your entire funnel.
+</Tip>
+
+To measure the impact of your funnel changes over time, see [Analytics](/concepts/analytics).

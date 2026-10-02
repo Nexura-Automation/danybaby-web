@@ -1,0 +1,106 @@
+---
+title: "Manage Your Google Workspace Settings"
+sidebarTitle: "Workspace"
+description: "Control your workspace name, timezone, currency, connected sites, team members, and account-level preferences from one place."
+---
+
+Your workspace settings define the foundation of how Google operates for your business. From here you control everything that applies account-wide — your brand identity, the websites you track, the team members who have access, and the core defaults that every campaign and report inherits.
+
+## General Settings
+
+Navigate to **Settings → General** to configure the following options.
+
+**Workspace Name**
+The name you set here appears in outgoing emails, PDF reports, and the browser tab when your team is logged in. Choose a name that clearly identifies your business or brand to avoid confusion when you share reports with stakeholders.
+
+**Default Timezone**
+Google uses this timezone to schedule campaigns, calculate send times, and display timestamps in analytics. Set this to the timezone where the majority of your audience or your team is based.
+
+<Tip>
+  Set your default timezone before you create your first campaign. Campaign schedules are locked to the timezone that was active at creation time, so changing it later will not retroactively update existing campaigns.
+</Tip>
+
+**Default Currency**
+All revenue figures in conversion reports — including attributed revenue, average order value, and goal completions — are displayed in this currency. Update it to match the currency your business transacts in so reports stay meaningful.
+
+**Logo**
+Upload a PNG or SVG of your brand logo (recommended size: 200 × 60 px). Google automatically places it in the header of every email template you send. You can override the logo on individual templates if needed.
+
+---
+
+## Sites
+
+The **Sites** section lets you manage every website connected to your Google workspace. Each site gets its own unique tracking snippet and its own analytics stream.
+
+**Adding a site**
+
+<Steps>
+  <Step title="Open the Sites panel">
+    Go to **Settings → Sites** and click **Add Site**.
+  </Step>
+  <Step title="Enter your domain">
+    Type the full domain (e.g., `https://www.example.com`) and give the site a friendly display name.
+  </Step>
+  <Step title="Install the tracking snippet">
+    Copy the generated snippet and paste it into the `<head>` of every page on your site. If you use a tag manager, add it as a custom HTML tag that fires on all pages.
+  </Step>
+  <Step title="Verify the connection">
+    Click **Verify** — Google will check for the snippet and confirm the site is live. Verification can take up to two minutes.
+  </Step>
+</Steps>
+
+**Viewing a tracking snippet**
+Click the **&lt;/&gt; Snippet** button next to any site in the list to copy its tracking code at any time.
+
+**Pausing tracking for a site**
+Toggle the **Active** switch next to a site to pause data collection without removing the site. Paused sites retain all historical data but stop recording new visits and events. Reactivate the toggle to resume tracking.
+
+---
+
+## Team Members
+
+Invite colleagues and control what each person can do inside your workspace under **Settings → Team Members**.
+
+**Inviting a team member**
+
+<Steps>
+  <Step title="Click Invite Member">
+    Open **Settings → Team Members** and click **Invite Member**.
+  </Step>
+  <Step title="Enter their email and assign a role">
+    Type the person's email address and select their role from the dropdown.
+  </Step>
+  <Step title="Send the invitation">
+    Click **Send Invite**. The invitee receives an email with a link to accept and set their password.
+  </Step>
+</Steps>
+
+**Roles and permissions**
+
+| Role   | Access level                                                               |
+|--------|----------------------------------------------------------------------------|
+| Admin  | Full access to all settings, billing, sites, integrations, and team management |
+| Editor | Create and manage campaigns and forms; view analytics; cannot change workspace settings or billing |
+| Viewer | Read-only access to analytics, campaigns, and leads; cannot make any changes |
+
+**Editing a role**
+Click the three-dot menu next to any team member and select **Edit Role** to change their permission level. Changes take effect immediately.
+
+**Removing a team member**
+Select **Remove** from the same menu. The user loses access instantly and is logged out of any active sessions.
+
+<Note>
+  You must have at least one Admin in your workspace at all times. Assign another Admin before removing yourself if you need to downgrade your own role.
+</Note>
+
+---
+
+## Danger Zone
+
+The **Danger Zone** section at the bottom of **Settings → General** contains irreversible account actions.
+
+<Warning>
+  Deleting your workspace permanently removes all sites, campaigns, leads, analytics data, and team members. This action cannot be undone and Google cannot recover deleted workspace data. Export any data you need before proceeding. You will be asked to type your workspace name to confirm before deletion executes.
+</Warning>
+
+To delete your workspace, click **Delete Workspace**, read the confirmation dialog carefully, type your workspace name exactly as shown, and click **Confirm Delete**.

@@ -1,0 +1,103 @@
+---
+title: "Frequently Asked Questions About Google"
+sidebarTitle: "FAQ"
+description: "Find answers to the most common questions about getting started, billing, integrations, data privacy, and Google features."
+---
+
+This page answers the questions our customers ask most often. Whether you're evaluating Google for the first time, setting up your account, or managing an existing workspace, you'll find quick, direct answers below. If your question isn't covered here, reach out to our support team via the live chat in the bottom-right corner of the dashboard.
+
+<AccordionGroup>
+  <Accordion title="How do I get started?">
+    Getting up and running with Google takes four steps:
+
+    1. **Create your account** — sign up at [google.com](#) and complete the onboarding wizard to name your workspace and set your timezone and currency.
+    2. **Install the tracking snippet** — go to **Settings → Sites**, add your website, and paste the generated snippet into the `<head>` of every page. This enables visit tracking and powers your conversion analytics.
+    3. **Create your first form** — navigate to **Capture → Forms**, click **New Form**, and use the drag-and-drop builder to design a lead capture form. Publish it and embed it on your site.
+    4. **Launch your first campaign** — go to **Campaigns → New Campaign**, choose a campaign type (email, pop-up, or landing page), select your audience, and activate it.
+
+    Most customers complete their initial setup in under 30 minutes.
+  </Accordion>
+
+  <Accordion title="Is there a free trial?">
+    Yes. Every new Google account includes a **14-day free trial** of the Pro plan, giving you access to all features with no restrictions. No credit card is required to start your trial.
+
+    At the end of your trial, you can choose a paid plan to continue or your workspace will automatically move to a limited free tier. Your data is preserved either way.
+  </Accordion>
+
+  <Accordion title="How many sites can I connect?">
+    The number of sites you can connect depends on your plan:
+
+    | Plan    | Connected sites |
+    |---------|-----------------|
+    | Starter | 1               |
+    | Growth  | 5               |
+    | Pro     | Unlimited        |
+
+    Each connected site has its own tracking snippet, analytics stream, and form library. You can upgrade your plan at any time under **Settings → Billing** to unlock additional sites.
+  </Accordion>
+
+  <Accordion title="Can I export my leads?">
+    Yes. You can export your full lead list or a filtered subset at any time.
+
+    - **CSV export** — go to **Leads**, apply any filters you want (date range, source, status, tags), then click **Export → Download CSV**. The file includes all lead fields and custom attributes.
+    - **API export** — use the [Google REST API](/api/overview) to programmatically retrieve leads in JSON format and pipe them into any downstream system.
+
+    Exports include all data captured at the time of the export. Regularly exporting your leads is a good practice, especially if you are approaching plan limits or planning to cancel.
+  </Accordion>
+
+  <Accordion title="Does Google integrate with my CRM?">
+    Yes. Google has native integrations with **Salesforce**, **HubSpot**, and **Pipedrive**. Each integration supports real-time lead sync, field mapping, and conversion event forwarding.
+
+    If your CRM is not on that list, you can connect it through **Zapier**, which gives you access to thousands of additional CRM and business tools. You can also use the [Google REST API](/api/overview) to build a custom integration.
+
+    For step-by-step setup instructions, see the [CRM Integration guide](/guides/integrate-crm).
+  </Accordion>
+
+  <Accordion title="How does A/B testing work?">
+    Google's A/B testing lets you split traffic between two variants of any campaign step — for example, two different subject lines, pop-up designs, or landing page headlines.
+
+    To set up a test, open any campaign, click **Add Variant** on the step you want to test, and make your changes to Variant B. Set the traffic split (the default is 50/50) and activate the campaign.
+
+    Google tracks opens, clicks, and conversions for each variant separately. For statistically meaningful results, we recommend a minimum of **200 recipients per variant** before drawing conclusions. Once you have a clear winner, click **Pick Winner** to send all future traffic to the winning variant.
+  </Accordion>
+
+  <Accordion title="What happens to my data if I cancel?">
+    After you cancel your Google subscription, your workspace enters a **30-day data retention period**. During this window, you can log in, export your leads, download reports, and access all your data normally.
+
+    After 30 days, your workspace and all associated data — leads, campaigns, analytics, and settings — are permanently deleted. This deletion is irreversible.
+
+    We strongly recommend exporting your leads as a CSV and downloading any reports you need before your retention period ends. You can do this from **Leads → Export** and **Analytics → Reports**.
+  </Accordion>
+
+  <Accordion title="How is billing calculated?">
+    Google billing is **per workspace**, not per user or per lead. You are charged based on the plan tier you select:
+
+    - **Monthly billing** — charged on the same date each month. You can cancel at any time and retain access through the end of your current billing period.
+    - **Annual billing** — billed once per year at a discounted rate (equivalent to getting two months free). Annual plans can be cancelled but are non-refundable after the first 30 days.
+
+    You can view your current plan, billing cycle, and invoice history under **Settings → Billing**.
+  </Accordion>
+
+  <Accordion title="Can I use custom email domains?">
+    Yes. Connecting a custom sending domain improves deliverability and ensures your emails come from your own brand (e.g., `hello@yourcompany.com`) rather than a shared Google domain.
+
+    To connect a custom domain:
+
+    1. Go to **Settings → Email Sending** and click **Add Domain**.
+    2. Enter your sending domain and follow the instructions to add the required DNS records (SPF, DKIM, and optionally DMARC) to your domain registrar.
+    3. Click **Verify** once the DNS records have propagated. Verification typically takes between 5 minutes and 48 hours depending on your DNS provider.
+
+    Once verified, you can select your custom domain as the sending address for any campaign.
+  </Accordion>
+
+  <Accordion title="Is my data GDPR compliant?">
+    Yes. Google is designed with GDPR compliance in mind:
+
+    - **EU data residency** — opt in to store your workspace data exclusively on EU-based servers under **Settings → Privacy**.
+    - **Consent fields** — every form builder includes built-in GDPR consent checkbox fields that you can make mandatory before a lead is captured.
+    - **Automatic unsubscribe handling** — all email campaigns include a legally required unsubscribe link. Google processes unsubscribe requests automatically and suppresses those addresses from future sends.
+    - **Data subject requests** — you can search for, export, or delete an individual lead's data at any time from the **Leads** section to fulfil data subject access and deletion requests.
+
+    For a full overview of our data practices, see our [Privacy Policy](#) and [Data Processing Agreement](#).
+  </Accordion>
+</AccordionGroup>

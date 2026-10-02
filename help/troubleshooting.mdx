@@ -1,0 +1,150 @@
+---
+title: "Troubleshoot Common Google Issues"
+sidebarTitle: "Troubleshooting"
+description: "Step-by-step fixes for tracking, lead capture, email deliverability, campaign sending, CRM sync, and API authentication issues."
+---
+
+This page walks you through fixes for the most common issues customers encounter with Google. Each section describes the symptom, explains the most likely causes, and gives you concrete steps to diagnose and resolve the problem. If you work through the relevant steps and the issue persists, contact our support team using the details at the bottom of this page.
+
+<AccordionGroup>
+  <Accordion title="My tracking snippet isn't recording visits">
+    If your site dashboard shows zero visits despite real traffic, the tracking snippet is either missing, placed incorrectly, or being blocked.
+
+    **Check 1: Confirm the snippet is in the correct location**
+    The Google snippet must be placed inside the `<head>` tag on every page you want to track — not in the `<body>` or footer. If you use a CMS like WordPress or a site builder like Webflow, look for a "custom code" or "head scripts" section in your theme or site settings.
+
+    **Check 2: Verify the site ID matches your dashboard**
+    Each site in Google has a unique site ID embedded in its snippet. If you've connected multiple sites, make sure the snippet installed on this domain contains the correct site ID. You can find the snippet for any site under **Settings → Sites → &lt;/&gt; Snippet**.
+
+    **Check 3: Disable your ad blocker**
+    Browser ad blockers and privacy extensions (such as uBlock Origin, Privacy Badger, or Brave Shields) frequently block analytics scripts. Test in a private/incognito window with extensions disabled, or use a different browser or device.
+
+    **Check 4: Verify the snippet is loading in the browser console**
+    Open your website in a browser, press `F12` to open Developer Tools, and click the **Console** tab. Type the following and press Enter:
+
+    ```js
+    window.Google
+    ```
+
+    If the snippet is installed and loading correctly, this returns a Google object with methods like `track` and `identify`. If it returns `undefined`, the snippet is not loading on that page.
+  </Accordion>
+
+  <Accordion title="Leads aren't appearing in the dashboard">
+    If form submissions are happening but no leads are appearing in **Leads**, work through the following checks.
+
+    **Check 1: Confirm the form is published**
+    Go to **Capture → Forms** and look at the **Status** column next to your form. It must read **Published** for submissions to be recorded. If the status shows **Draft**, click the form, then click **Publish**.
+
+    **Check 2: Verify the embed code is correct**
+    If you're using an embedded form, make sure the embed code on your site matches the current code in Google. Click **Embed** on the form card to copy the latest code, then replace the code on your site. Outdated embed codes can silently fail after form updates.
+
+    **Check 3: Test with a real submission**
+    Submit the form yourself using a real email address. Wait 30 seconds, then refresh your **Leads** dashboard. If your own submission doesn't appear, the issue is in the form configuration or embed. If it does appear, the earlier submissions may have been filtered — check any active lead filters or date range selectors on the Leads page.
+  </Accordion>
+
+  <Accordion title="Emails are going to spam">
+    Emails landing in spam are almost always a sending domain authentication issue. Sending from a shared Google domain reduces deliverability — connecting and authenticating your own domain is the most effective fix.
+
+    **Step 1: Connect a custom sending domain**
+    Go to **Settings → Email Sending → Add Domain** and enter your sending domain (e.g., `mail.yourcompany.com`).
+
+    **Step 2: Add the required DNS records**
+    Google will generate SPF and DKIM records for you to add to your domain's DNS. Add both records exactly as shown. An example SPF record looks like this:
+
+    ```txt
+    v=spf1 include:sendgrid.net include:em.google.com ~all
+    ```
+
+    Your exact record will differ — copy it directly from the **Settings → Email Sending** panel rather than using this example.
+
+    **Step 3: Verify the domain**
+    After adding your DNS records, click **Verify Domain** in Google. DNS propagation can take between 5 minutes and 48 hours. Once verified, a green checkmark appears next to your domain.
+
+    **Step 4: Check your email content**
+    Spam filters also score message content. Avoid excessive use of all-caps, excessive punctuation (!!!), spam trigger words like "FREE" or "GUARANTEED", and attachments in cold campaigns. Use the **Spam Score** checker in the campaign editor to review your content before sending.
+  </Accordion>
+
+  <Accordion title="Campaign isn't sending">
+    If a campaign is configured but not sending, check the following in order.
+
+    **Check 1: Confirm the campaign is Active**
+    Open the campaign and check its status badge. It must show **Active**. If it shows **Paused** or **Draft**, click **Activate** to start sending.
+
+    **Check 2: Check that your audience isn't empty**
+    Go to the **Audience** step of the campaign and review the estimated audience count. If it shows 0, your segment filters are too narrow and no leads match the criteria. Broaden the filters — for example, remove date range restrictions or reduce the number of required tags.
+
+    **Check 3: Verify your sending domain is confirmed**
+    Campaigns will not send if the assigned sending domain has a failed or pending verification status. Go to **Settings → Email Sending** and check that your domain shows a green **Verified** badge. If it shows **Pending** or **Failed**, re-add your DNS records and click **Re-verify**.
+  </Accordion>
+
+  <Accordion title="CRM sync isn't working">
+    If leads are being captured in Google but not appearing in your CRM, or if previously syncing records have stopped updating, follow these steps.
+
+    **Step 1: Re-authorize the integration**
+    OAuth tokens expire or are revoked when you change your CRM password, rotate API keys, or change account permissions. Go to **Settings → Integrations**, find your CRM card, and click **Reconnect**. Complete the OAuth flow or paste a fresh API key to restore the connection.
+
+    **Step 2: Check for field mapping changes**
+    If you've recently added, renamed, or removed fields in your CRM, your Google field mappings may now reference fields that no longer exist. Open the integration's configuration panel, review each mapped field, and update any that show a warning icon.
+
+    **Step 3: Review the sync log**
+    Open the integration card and click **View Sync Log**. This shows a history of sync attempts with success and error statuses. Error messages in the log — such as "required field missing" or "duplicate key" — point directly to what needs to be fixed.
+  </Accordion>
+
+  <Accordion title="API requests returning 401">
+    A `401 Unauthorized` response means your request is not authenticated correctly.
+
+    **Check 1: Confirm your API key is included in the request header**
+    Every request to the Google API must include your API key in the `Authorization` header:
+
+    ```http
+    Authorization: Bearer YOUR_API_KEY
+    ```
+
+    Make sure there are no extra spaces, line breaks, or missing `Bearer` prefixes.
+
+    **Check 2: Check if your API key has been revoked or expired**
+    API keys can be manually revoked, or they may expire if your workspace has automatic key rotation enabled. Go to **Settings → API Keys** to view the status of your keys. If your key shows as **Revoked** or **Expired**, generate a new one by clicking **Create New Key**, copy it immediately (it is only shown once), and update your integration.
+
+    **Check 3: Verify workspace access**
+    If you are using a key tied to a specific team member account and that account has been removed from the workspace, the key will no longer work. Use a key associated with an active Admin account for production integrations.
+  </Accordion>
+
+  <Accordion title="Conversion events not showing">
+    If you have set up conversion tracking but events are not appearing in **Analytics → Conversions**, work through these steps.
+
+    **Check 1: Allow up to 15 minutes for events to appear**
+    Conversion events are processed in near-real-time but can take up to 15 minutes to appear in the dashboard during high-traffic periods. Wait a few minutes and refresh before investigating further.
+
+    **Check 2: Verify the `window.Google.track` call is firing**
+    Open your browser's Developer Tools (`F12`), go to the **Console** tab, and add a `console.log` immediately before your tracking call to confirm it executes:
+
+    ```js
+    console.log('Firing Google conversion event');
+    window.Google.track('conversion', { goal: 'purchase', value: 99.00 });
+    ```
+
+    If you see the log message but the event still doesn't appear, the event name or goal identifier may not match what is configured in Google. If you don't see the log message, the code is not reaching that line — check for JavaScript errors earlier on the page that may be blocking execution.
+
+    **Check 3: Confirm the goal is configured in Settings**
+    Go to **Settings → Goals** and verify that a goal matching your event name exists and is set to **Active**. If the goal doesn't exist, Google has nowhere to record the event. Create the goal, then test the event again.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Contacting Support
+
+If the steps above don't resolve your issue, our support team is ready to help.
+
+- **Live chat** — click the chat bubble in the bottom-right corner of any Google page for real-time help from our support team.
+- **Email** — send a detailed description of your issue, including any error messages and the steps you've already tried, to [support@google.com](mailto:support@google.com).
+
+**Response time SLAs by plan:**
+
+| Plan    | Response time |
+|---------|---------------|
+| Starter | 48 hours      |
+| Growth  | 24 hours      |
+| Pro     | 4 hours       |
+
+For the fastest resolution, include your workspace ID (found in **Settings → General**), a description of the issue, and any relevant screenshots or error messages when you contact us.
