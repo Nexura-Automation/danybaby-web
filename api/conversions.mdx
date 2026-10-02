@@ -1,10 +1,10 @@
 ---
-title: "Conversions API — Log and Query Conversion Events"
+title: "Conversions API — Log and Retrieve Conversion Events"
 sidebarTitle: "Conversions"
-description: "Log server-side conversion events and query your conversion history by goal, lead, or date range using the Google Conversions API."
+description: "Log server-side conversion events and query your full conversion history by goal, lead, or date range using the Google Conversions API."
 ---
 
-The Conversions API lets you record and retrieve conversion events that happen in your product or on your server. You can log any meaningful action — a purchase, a plan upgrade, a demo booked — along with an optional monetary value, the lead it belongs to, and arbitrary metadata. Server-side conversion logging complements client-side tracking and is essential for capturing events that happen outside the browser, such as back-end subscription activations or payment processor callbacks. All endpoints require an API key with at least the `conversions:read` scope; logging new conversions requires `conversions:read` plus `leads:read`.
+The Conversions API lets you record and retrieve conversion events that happen in your product or on your server. You can log any meaningful action — a purchase, a plan upgrade, a demo booked — along with an optional monetary value, the lead it belongs to, and arbitrary metadata. Server-side conversion logging complements client-side tracking and is essential for capturing events that happen outside the browser, such as back-end subscription activations or payment processor callbacks. All endpoints require an API key with at least the `conversions:read` scope; logging new conversions additionally requires `conversions:write`.
 
 ---
 
@@ -154,18 +154,6 @@ const { data } = await res.json();
 ```
 
 </CodeGroup>
-
-**Request body:**
-
-```json
-{
-  "goal": "purchase",
-  "lead_id": "lead_abc123",
-  "value": 99.00,
-  "currency": "USD",
-  "metadata": { "plan": "pro", "source": "checkout" }
-}
-```
 
 ```json Response
 {

@@ -1,7 +1,7 @@
 ---
-title: "Webhooks API — Real-Time Event Notifications"
+title: "Webhooks API — Subscribe to Real-Time Event Notifications"
 sidebarTitle: "Webhooks"
-description: "Register HTTPS endpoints to receive real-time Google event notifications for leads, campaigns, and conversions as they happen."
+description: "Register HTTPS endpoints to receive real-time Google event notifications for leads, campaigns, and conversions as they occur in your workspace."
 ---
 
 Webhooks let you react to events in your Google workspace the moment they occur, without polling the API. When an event fires — a new lead is captured, a campaign completes, a conversion is logged — Google sends an HTTP POST request to your registered endpoint with a signed JSON payload. You can use webhooks to trigger downstream workflows: syncing records to your CRM, sending Slack notifications, updating your billing system, or kicking off custom automation. All webhook management endpoints require an API key with the `webhooks:manage` scope.

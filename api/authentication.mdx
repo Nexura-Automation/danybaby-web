@@ -1,7 +1,7 @@
 ---
-title: "Authenticate Requests to the Google API"
+title: "How to Authenticate Every Request to the Google REST API"
 sidebarTitle: "Authentication"
-description: "Learn how to generate API keys, attach them to requests as Bearer tokens, manage scopes, and safely rotate credentials."
+description: "Learn how to generate API keys, attach them to requests as Bearer tokens, configure scopes, and safely rotate credentials without downtime."
 ---
 
 The Google API uses API key authentication. Every request you make must include a valid API key in the `Authorization` header as a Bearer token. Keys are created in your workspace settings, scoped to specific permissions, and can be rotated or revoked at any time without affecting other keys in your workspace.
@@ -12,7 +12,7 @@ To create a new API key, follow these steps in the Google dashboard:
 
 1. Navigate to **Settings → API Keys**.
 2. Click **New Key**.
-3. Enter a descriptive name (for example, `Production Server` or `CI Pipeline`).
+3. Enter a descriptive name (for example, `Production Server` or `Data Sync Service`).
 4. Optionally, enter one or more IP addresses to restrict which origins can use the key.
 5. Select the [scopes](#api-key-scopes) your integration requires.
 6. Click **Create**.
